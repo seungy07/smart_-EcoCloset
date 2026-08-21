@@ -74,5 +74,22 @@ public class MemberDao extends BaseDao{
         return null;
     }
 // 4. 회원탈퇴
-    
+public boolean memberDelete(int m_no){
+    try{
+        String sql = "delete from users where m_no = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        
+        ps.setInt(1, m_no);
+
+        int result = ps.executeUpdate();
+
+        if( result == 1){
+            return true;
+        }
+    }catch(Exception e){
+        System.out.println(e);
+    }
+    return false;
+    }
+ 
 }
