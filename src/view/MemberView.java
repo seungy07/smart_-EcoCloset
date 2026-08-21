@@ -32,9 +32,7 @@ public class MemberView {
             else if( ch == 2){
                 signUp();
             }
-            else if( ch == 3){
-                System.out.println("프로그램을 종료합니다.");
-            } 
+            else if( ch == 3){System.out.println("프로그램을 종료합니다.");} 
             else{{System.out.println("[경고] 잘못된 번호입니다.");}}
         }
 
