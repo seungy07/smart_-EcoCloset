@@ -85,9 +85,9 @@ public class ClosetView {
         closetDto.setCl_color(cl_color);
         closetDto.setCl_name(cl_name);
 
-        boolean result = cl_c.clothesAdd(closetDto);
+        /*  boolean result = cl_c.clothesAdd(closetDto);
         if(result){System.out.println("의류 등록 성공");}
-        else{System.out.println("의류 등록 실패");}
+        else{System.out.println("의류 등록 실패");} */
     }
 
     
