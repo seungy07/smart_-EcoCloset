@@ -5,8 +5,8 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 import controller.ClosetController;
 import model.dto.ClosetDto;
-/*  체크 사항
-로그인한 회원 번호 호출 부분  */
+
+/* 현재 로그인된 회원 번호를 가져와서 해야함.  현재 테스트용도로 1로 설정이 되어있음 주석 부분 확인*** */
 
 public class ClosetView {
     private ClosetView(){}
@@ -85,9 +85,9 @@ public class ClosetView {
         closetDto.setCl_color(cl_color);
         closetDto.setCl_name(cl_name);
 
-        /*  boolean result = cl_c.clothesAdd(closetDto);
+        boolean result = cl_c.clothesAdd(closetDto);
         if(result){System.out.println("의류 등록 성공");}
-        else{System.out.println("의류 등록 실패");} */
+        else{System.out.println("의류 등록 실패");}
     }
 
     
