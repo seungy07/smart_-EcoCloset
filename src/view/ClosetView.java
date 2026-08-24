@@ -44,7 +44,7 @@ public class ClosetView {
                 else if(ch==3){} // 3. 의류 활용도
                 else if(ch==4){ RecycleView.getInstance().unusedReport(); } // 4. 미착용 의류
                 else if(ch==5){} // 5. 마이 의류 관리
-                else if(ch==0){}  // 0. 로그아웃
+                else if(ch==0){MemberController.getInstance().logout();  MemberView.getInstance().run();}  // 0. 로그아웃
 
             }catch(InputMismatchException e){ scan = new Scanner(System.in); System.out.println("정수만 입력해주세요. " + e);}
         }
