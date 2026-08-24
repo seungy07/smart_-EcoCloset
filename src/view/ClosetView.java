@@ -126,13 +126,22 @@ public class ClosetView {
             System.out.println("등록된 나의 옷이 없습니다. :)");
             return;
         }
+        System.out.println("의류번호\t카테고리\t색상\n의류이름");
+        System.out.println("-------------------------------------");
 
+        for(ClosetDto list : result){
+            System.out.println(
+                list.getCl_no()+"\t"+
+                list.getC_no()+"\t"+
+                list.getCl_color()+"\t"+
+                list.getCl_name()
+            );
+        }
+        System.out.println("------------------------------------");
+        // 의류 개별조회 선택부분 --> 의류 삭제
         
-        
-
-        
-
     }
+    // 의류 삭제
 
     
     

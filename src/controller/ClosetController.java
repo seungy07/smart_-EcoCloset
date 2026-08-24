@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.dao.ClosetDao;
 import model.dto.ClosetDto;
 
@@ -24,6 +26,10 @@ public class ClosetController {
         return cl_d.clothesAdd(closetDto);
     }
     
-    
+    // 의류 전체 조회
+    public ArrayList<ClosetDto> clothesPrintAll(int m_no){
+        ArrayList<ClosetDto> result = cl_d.clothesPrintAll(m_no);
+        return result; 
+    }
 
 }
