@@ -34,7 +34,7 @@ public class RecycleView {
 
                 // 의류 번호를 선택할 부분
                 System.out.println();
-                System.out.print("관리할 의류 번호 선택 >> ");
+                System.out.print("관리할 의류 번호 선택(뒤로가기: 0) >> ");
                 int ch = scanner.nextInt();
                 
                 if (ch == 0) {

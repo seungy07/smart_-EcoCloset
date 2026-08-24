@@ -5,13 +5,15 @@ public class RecycleDto {
     String name;
     String date;
     int days;
+    int unUsedDays;
     
     public RecycleDto(){}
-    public RecycleDto(int no, String name, String date, int days) {
+    public RecycleDto(int no, String name, String date, int days, int unUsedDays) {
         this.no = no;
         this.name = name;
         this.date = date;
         this.days = days;
+        this.unUsedDays = unUsedDays;
     }
     
     public int getNo() {
@@ -39,8 +41,19 @@ public class RecycleDto {
         this.days = days;
     }
 
+    public int getUnUsedDays() {
+        return unUsedDays;
+    }
+
+    public void setUnUsedDays(int unUsedDays) {
+        this.unUsedDays = unUsedDays;
+    }
     @Override
     public String toString() {
-        return "RecycleDto [no=" + no + ", name=" + name + ", date=" + date + ", days=" + days + "]";
+        return "RecycleDto [no=" + no + ", name=" + name + ", date=" + date + ", days=" + days + ", unUsedDays="
+                + unUsedDays + "]";
     };
+
+
+
 }
