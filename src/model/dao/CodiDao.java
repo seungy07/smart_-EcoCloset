@@ -1,7 +1,6 @@
 package model.dao;
 
-import model.dto.SeasonClothesDto;
-import model.dto.WearDto;
+import model.dto.CodiDto.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,7 +49,7 @@ public class CodiDao extends BaseDao {
     }
 
     // 2. 착용 기록 등록
-    public boolean wearAdd(WearDto wearDto) {
+    public boolean wearAdd(WearLogDto wearDto) {
         String sql = "INSERT INTO wearLog(cl_no, w_context) VALUES (?, ?)";
         try {
             conn.setAutoCommit(false);
