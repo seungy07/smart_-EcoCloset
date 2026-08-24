@@ -92,5 +92,39 @@ public boolean memberDelete(int m_no){
     }
     return false;
     }
+
+    // 5. Eco Point 계산
+    public int ecoPoint(int m_no){
+        int ecoPoint = 0;
+        try{String sql = """
+                select re_type, count(*) as count
+                from clothes where m_no = ?
+                and re_type is not null
+                group by re_type
+                """;
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, m_no);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String re_type = rs.getString("re_type");
+                int count = rs.getInt("count");
+                
+                if(re_type.equals("기부")){
+                    ecoPoint += count * 100;
+                }else if(re_type.equals("나눔")){
+                    ecoPoint += count * 80;
+                }else if(re_type.equals("중고판매")){
+                    ecoPoint += count * 70;
+                }
+            }
+            }catch(Exception e){
+                System.out.println(e);
+            }
+            return ecoPoint;
+
+        
+    }
  
 }
