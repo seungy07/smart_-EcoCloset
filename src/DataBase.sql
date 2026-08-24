@@ -1095,13 +1095,28 @@ UPDATE clothes SET re_type = '폐기' WHERE cl_no = 299;
 select
     cl.cl_no AS "의류번호(PK)",
     cl.cl_name AS '의류이름', 
+    COUNT(w.w_no) AS '착용횟수',
     MAX(w.w_context) AS '마지막 착용',
     DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'
     from users u inner join clothes cl on u.m_no = cl.m_no
-    join wearlog w on cl.cl_no = w.cl_no
+    left join wearlog w on cl.cl_no = w.cl_no
+    WHERE u.m_no = 1
+    GROUP BY u.m_no, cl.cl_no, cl.cl_name;
+
+
+
+-- RecycleDto select문
+select
+    cl.cl_no AS "의류번호(PK)",
+    cl.cl_name AS '의류이름', 
+    COUNT(w.w_no) AS '착용횟수',
+    MAX(w.w_context) AS '마지막 착용',
+    IFNULL(DATEDIFF(CURDATE(), MAX(w.w_context)), -1) AS '미착용일'
+    from users u inner join clothes cl on u.m_no = cl.m_no
+    left join wearlog w on cl.cl_no = w.cl_no
     WHERE u.m_no = 1
     GROUP BY u.m_no, cl.cl_no, cl.cl_name
-    HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;
+    HAVING MAX(w.w_context) IS NULL OR DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;
 
 -- ----------------------------------------
 -- 장기 미착용 의류

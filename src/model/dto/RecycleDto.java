@@ -3,18 +3,10 @@ package model.dto;
 public class RecycleDto {
     int no;
     String name;
+    int wearCount;
     String date;
-    int days;
     int unUsedDays;
-    
-    public RecycleDto(){}
-    public RecycleDto(int no, String name, String date, int unUsedDays) {
-        this.no = no;
-        this.name = name;
-        this.date = date;
-        this.unUsedDays = unUsedDays;
-    }
-    
+
     public int getNo() {
         return no;
     }
@@ -27,26 +19,29 @@ public class RecycleDto {
     public void setName(String name) {
         this.name = name;
     }
+    public int getWearCount() {
+        return wearCount;
+    }
+    public void setWearCount(int wearCount) {
+        this.wearCount = wearCount;
+    }
     public String getDate() {
         return date;
     }
     public void setDate(String date) {
         this.date = date;
     }
-
     public int getUnUsedDays() {
         return unUsedDays;
     }
-
     public void setUnUsedDays(int unUsedDays) {
         this.unUsedDays = unUsedDays;
     }
+    
     @Override
     public String toString() {
-        return "RecycleDto [no=" + no + ", name=" + name + ", date=" + date + ", days=" + days + ", unUsedDays="
-                + unUsedDays + "]";
-    };
-
-
+        return "RecycleDto [no=" + no + ", name=" + name + ", wearCount=" + wearCount + ", date=" + date
+                + ", unUsedDays=" + unUsedDays + "]";
+    }
 
 }
