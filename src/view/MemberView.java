@@ -65,7 +65,11 @@ public class MemberView {
             );
 
             // 로그인 성공 후 메인화면 이동
+<<<<<<< HEAD
             mainView.getInstance().run();
+=======
+            ClosetView.getInstance().main_menu();
+>>>>>>> 40aef9e6090ec27c63a9d58f747f383d72988dd0
         }else{
             System.out.println("[경고] 아이디 또는 비밀번호가 일치하지 않습니다.");
         }

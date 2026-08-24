@@ -16,7 +16,16 @@ public class RecycleDao extends BaseDao{
         ArrayList<RecycleDto> list = new ArrayList<>();
         try {
             // 1-1. SQL 작성
-            String sql = "select * from clothes";
+            String sql = "select\r\n" + //
+                                "cl.cl_no AS \"의류번호(PK)\",\r\n" + //
+                                "cl.cl_name AS '의류이름', \r\n" + //
+                                "MAX(w.w_context) AS '마지막 착용',\r\n" + //
+                                "DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'\r\n" + //
+                                "from users u inner join clothes cl on u.m_no = cl.m_no\r\n" + //
+                                "join wearlog w on cl.cl_no = w.cl_no\r\n" + //
+                                "WHERE u.m_no = 3\r\n" + //
+                                "GROUP BY u.m_no, cl.cl_no, cl.cl_name\r\n" + //
+                                "HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;";
 
             // 1-2. 연동된 데이터베이스에 SQL 기재하기
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -27,10 +36,10 @@ public class RecycleDao extends BaseDao{
             // 1-4. SQL 결과 가져오기(테이블 형태로 반환)
             while (rs.next()) {// 각 레코드마다 순회
                 RecycleDto recycleDto = new RecycleDto();
-                recycleDto.setNo(rs.getInt("cl_no"));
-                recycleDto.setName(rs.getString("cl_name"));
-                recycleDto.setDate(rs.getString("w_context"));
-                //추가로, 몇일 안입었는지를 어떻게 보여줄까를 고민해야 한다.
+                recycleDto.setNo(rs.getInt("의류번호(PK)"));
+                recycleDto.setName(rs.getString("의류이름"));
+                recycleDto.setDate(rs.getString("마지막 착용"));
+                recycleDto.setUnUsedDays(rs.getInt("미착용일"));
 
                 list.add(recycleDto); // 각 레코드들 RecycleDto 배열에 추가
             }
