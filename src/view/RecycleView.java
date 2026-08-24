@@ -4,20 +4,28 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import controller.MemberController;
 import controller.RecycleController;
 import model.dto.RecycleDto;
-
+    // 로그인한 회원 번호 확인용
+    
 public class RecycleView {
+    
     private RecycleView() {}; // 1.
     private static final RecycleView instance = new RecycleView(); // 2.
     public static RecycleView getInstance() { return instance; } // 3.
 
     private RecycleController rc = RecycleController.getInstance();
 
+    // 로그인한 멤버 번호 불러오는 메서드 = getLoginMember()
+    private MemberController m_c = MemberController.getInstance();
+    private int getLoginMno(){ return m_c.getLoginMember().getM_no(); }
+
     Scanner scanner = new Scanner(System.in);
 
     // 장기 미착용 의류 목록 출력하는 부분
     public void unusedReport(){
+        int m_no = getLoginMno();
         while (true) {
             try {
                 System.out.println("----------------------------------------");
@@ -46,7 +54,7 @@ public class RecycleView {
 
                 for(RecycleDto dto : result){
                     if (dto.getNo() == ch_no) {
-                        reCycleAdd(ch_no, dto);
+                        reCycleAdd(ch_no, dto, m_no);
                         break;
                     }
                 }
@@ -60,7 +68,7 @@ public class RecycleView {
     }
 
     // 기부or중고거래 처리 메소드 -> clothes 테이블에서 삭제 X
-    public void reCycleAdd(int ch_no, RecycleDto dto){
+    public void reCycleAdd(int ch_no, RecycleDto dto, int m_no){
         while (true) {
             try {
                 System.out.println();
@@ -72,12 +80,13 @@ public class RecycleView {
                 System.out.println("미착용 기간 - " + dto.getUnUsedDays() + "일");
                 System.out.println();
                 System.out.println("> 이 옷을 어떻게 관리하시겠습니까?");
-                System.out.println("> 1. 계속 보관 2. 기부 3. 나눔 4. 중고판매 5. 의류 폐기");
+                System.out.print("> 1. 계속 보관 2. 기부 3. 나눔 4. 중고판매 5. 의류 폐기: ");
                 int caseNum = scanner.nextInt();
-                boolean result = rc.reCycleAdd(ch_no, caseNum, dto);
+                boolean result = rc.reCycleAdd(ch_no, caseNum, dto, m_no);
 
                 if (result) {
-                    System.out.println("> ");
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>");
+                    break;
                 }
 
             } catch (InputMismatchException e) {

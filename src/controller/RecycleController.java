@@ -18,8 +18,8 @@ public class RecycleController {
         return result;
     }
 
-    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto){
-        boolean result = rd.reCycleAdd(ch_no, caseNum, dto);
+    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto, int m_no){
+        boolean result = rd.reCycleAdd(ch_no, caseNum, dto, m_no);
 
         return result;
     }

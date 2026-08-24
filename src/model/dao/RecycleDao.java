@@ -5,20 +5,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import controller.MemberController;
 import model.dto.RecycleDto;
 
 public class RecycleDao extends BaseDao{
+
     private RecycleDao(){};
     private static final RecycleDao instance = new RecycleDao();
     public static RecycleDao getInstance() { return instance; }
 
+    // 로그인한 멤버 번호 불러오는 메서드 = getLoginMember()
+    private MemberController m_c = MemberController.getInstance();
+    private int getLoginMno(){ return m_c.getLoginMember().getM_no(); }
+
     public ArrayList<RecycleDto> unusedReport(){
+        int m_no = getLoginMno();
         ArrayList<RecycleDto> list = new ArrayList<>();
         try {
             // 1-1. SQL 작성
             String sql = "select\r\n" + //
                                 "cl.cl_no AS \"의류번호\",\r\n" + //
                                 "cl.cl_name AS '의류이름', \r\n" + //
+                                "COUNT(w.w_no) AS '착용횟수', \r\n" + //
                                 "MAX(w.w_context) AS '마지막 착용',\r\n" + //
                                 "DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'\r\n" + //
                                 "from users u inner join clothes cl on u.m_no = cl.m_no\r\n" + //
@@ -54,7 +62,7 @@ public class RecycleDao extends BaseDao{
         return list; // 레코드 담은 배열 반환
     }
 
-    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto){
+    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto, int m_no){
         boolean result = false;
         String reTypeStr = ""; // 어떻게 처리하는지를 담은 문자열(caseNum에 따라 달라짐)
         try {
@@ -88,6 +96,7 @@ public class RecycleDao extends BaseDao{
             // executeUpdate()를 조건문 안에다만 작성해도, 일단 조건문을 평가하기 위해 메서드를 무조건 실행하므로 실제로도 작동함
             if (ps.executeUpdate() > 0) { 
                 result = true;
+                System.out.println("해당 의류를 ["+reTypeStr+"] 처리합니다.");
             }
         } catch (Exception e) {
             System.out.println("처리 중 오류가 발생했습니다." + e);
