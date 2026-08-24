@@ -6,4 +6,3 @@ public class App {
         MemberView.getInstance().run();
     }}
 
-
