@@ -31,7 +31,7 @@ public class RecycleDao extends BaseDao{
                                 "DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'\r\n" + //
                                 "from users u inner join clothes cl on u.m_no = cl.m_no\r\n" + //
                                 "join wearlog w on cl.cl_no = w.cl_no\r\n" + //
-                                "WHERE u.m_no = 1\r\n" + //
+                                "WHERE u.m_no = ? AND cl.re_type IS NULL\r\n" + //
                                 "GROUP BY u.m_no, cl.cl_no, cl.cl_name\r\n" + //
                                 "HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;";
 
@@ -39,7 +39,7 @@ public class RecycleDao extends BaseDao{
             PreparedStatement ps = conn.prepareStatement(sql);
 
             // 1-3. 와일드카드에 유저번호(m_no) 가져오기
-            // ps.setint(1, );
+            ps.setInt(1, m_no);
 
             // 1-4. 기재된 SQL을 실행하기
             ResultSet rs = ps.executeQuery();
