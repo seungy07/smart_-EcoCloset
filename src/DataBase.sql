@@ -1090,3 +1090,43 @@ UPDATE clothes SET re_type = '기부' WHERE cl_no = 282;
 UPDATE clothes SET re_type = '중고판매' WHERE cl_no = 288;
 UPDATE clothes SET re_type = '나눔' WHERE cl_no = 294;
 UPDATE clothes SET re_type = '폐기' WHERE cl_no = 299;
+
+
+select
+    cl.cl_no AS "의류번호(PK)",
+    cl.cl_name AS '의류이름', 
+    MAX(w.w_context) AS '마지막 착용',
+    DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'
+    from users u inner join clothes cl on u.m_no = cl.m_no
+    join wearlog w on cl.cl_no = w.cl_no
+    WHERE u.m_no = 1
+    GROUP BY u.m_no, cl.cl_no, cl.cl_name
+    HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;
+
+-- ----------------------------------------
+-- 장기 미착용 의류
+-- ----------------------------------------
+
+-- 최근 90일 이상 착용하지 않은 옷
+
+-- 번호 - 의류 - 마지막 착용 - 미착용 기간
+
+-- 3 - 회색 니트 - 2026-03-28 - 145일
+-- 4 - 검정 셔츠 - 2026-05-03 - 109일
+
+-- 관리할 의류 번호 >> 3
+
+
+-- [회색 니트]
+
+-- 착용횟수 - 2회
+-- 마지막 착용 - 2026-03-28
+-- 미착용 기간 - 145일
+
+-- 이 옷을 어떻게 관리하시겠습니까?
+
+-- 1. 계속 보관
+-- 2. 기부
+-- 3. 나눔
+-- 4. 중고판매
+-- 5. 의류 폐기
