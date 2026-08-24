@@ -126,6 +126,8 @@ public class ClosetView {
             System.out.println("등록된 나의 옷이 없습니다. :)");
             return;
         }
+
+        
         
 
         
