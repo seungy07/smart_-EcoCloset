@@ -90,8 +90,13 @@ public class ClosetView {
         System.out.println("");
         System.out.print("의류 이름: ");  String cl_name = scan.next();
 
-        ClosetDto closetDto = new ClosetDto(); // 받은 정보를 담을 객체 생성
-        closetDto.setM_no(1); // 임시 회원 번호(테스트용) 추후 로그인한 정보에서 회원번호 호출해서 불러옴
+        // 현재 로그인한 회원번호
+         int m_no = MemberController.getInstance()
+                                    .getLoginMember()
+                                    .getM_no();
+        ClosetDto closetDto = new ClosetDto();  // 입력받은 의류 정보를 저장할 객체 생성                                      // 입력받은 의류 정보를 저장할 객체 생성
+    
+        closetDto.setM_no(m_no); // 임시 회원 번호(테스트용) 추후 로그인한 정보에서 회원번호 호출해서 불러옴
         closetDto.setC_no(c_no);
         closetDto.setCl_color(cl_color);
         closetDto.setCl_name(cl_name);

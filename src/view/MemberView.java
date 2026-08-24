@@ -61,8 +61,9 @@ public class MemberView {
         if( result == true){
             System.out.println("[안내] 로그인에 성공했습니다.");
             System.out.println(
-                memberController.getLoginMember().getM_id() +"님 환영합니다."
+                memberController.getLoginMember().getM_no() +"님 환영합니다."
             );
+            
 
             // 로그인 성공 후 메인화면 이동
             ClosetView.getInstance().main_menu();
