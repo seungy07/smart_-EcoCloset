@@ -65,7 +65,7 @@ public class MemberView {
             );
 
             // 로그인 성공 후 메인화면 이동
-            MainView.getInstance().run();
+            mainView.getInstance().run();
         }else{
             System.out.println("[경고] 아이디 또는 비밀번호가 일치하지 않습니다.");
         }
@@ -81,8 +81,20 @@ public class MemberView {
         System.out.print("아이디 >> ");
         String m_id = scan.next();
 
+        // 아이디 중복검사
+        boolean check = memberController.inCheck(m_id);
+        if(check == false){
+            System.out.println("[경고] 이미 사용중인 아이디입니다.");
+            return;
+        }
+
         System.out.print("비밀번호 >> ");
         String m_pwd = scan.next();
+        boolean result = memberController.signUp(m_id, m_pwd);
+
+        if(result == true){
+            System.out.println("[안내] 회원가입이 완료되었습니다.");
+        }else{System.out.println("[경고] 회원가입에 실패했습니다.");}
 
         // 추후 Controller 연동 예쩡
 
