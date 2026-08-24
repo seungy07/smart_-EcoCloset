@@ -3,7 +3,7 @@
 package view;
 
 import java.util.Scanner;
-
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import controller.ClosetController;
 import controller.MemberController;
@@ -19,6 +19,13 @@ public class ClosetView {
     public static ClosetView getInstance(){ return instance; }
     private ClosetController cl_c = ClosetController.getInstance();
     private Scanner scan = new Scanner(System.in);
+
+    // 로그인한 회원 번호 확인용
+    private MemberController m_c = MemberController.getInstance();
+    private int getLoginMno(){
+        return m_c.getLoginMember().getM_no();
+    }
+
 
     // 메인 메뉴
     public void main_menu(){
@@ -52,7 +59,7 @@ public class ClosetView {
     // 내 옷장 관리
     public void my_closet(){
         System.out.println("==============================");
-        System.out.println("            내 옷장");
+        System.out.println("            내 옷장 관리");
         System.out.println("==============================");
         System.out.println(" ");
         System.out.println("1. 의류 등록 ");
@@ -64,7 +71,7 @@ public class ClosetView {
 
         if(ch==1){ clothesAdd(); }  // 의류 등록
         else if(ch==2){}  // 카테고리별 의류 조회 및 삭제 페이지
-        else if(ch==0){ main_menu(); }  // 뒤로가기 메인 메뉴
+        else if(ch==0){ return; }  // 뒤로가기 메인 메뉴
         else{System.out.println("다시 입력 해주세요."); my_closet(); }
     }
 
@@ -90,10 +97,10 @@ public class ClosetView {
         System.out.println("");
         System.out.print("의류 이름: ");  String cl_name = scan.next();
 
+
         // 현재 로그인한 회원번호
-         int m_no = MemberController.getInstance()
-                                    .getLoginMember()
-                                    .getM_no();
+        int m_no =  getLoginMno();
+
         ClosetDto closetDto = new ClosetDto();  // 입력받은 의류 정보를 저장할 객체 생성                                      
     
         closetDto.setM_no(m_no); // 현재 로그인한 회원번호
@@ -104,6 +111,25 @@ public class ClosetView {
         boolean result = cl_c.clothesAdd(closetDto);
         if(result){System.out.println("의류 등록 성공");}
         else{System.out.println("의류 등록 실패");}
+    }
+
+    // 의류 전체조회
+    public void clothesPrintAll(){
+        int m_no = getLoginMno();
+        
+        System.out.println("==============================");
+        System.out.println("             내 옷장");
+        System.out.println("==============================");
+
+        ArrayList<ClosetDto> result = cl_c.clothesPrintAll(m_no);
+        if(result.isEmpty()){
+            System.out.println("등록된 나의 옷이 없습니다. :)");
+            return;
+        }
+        
+
+        
+
     }
 
     
