@@ -124,7 +124,7 @@ public boolean memberDelete(int m_no){
             }
             return ecoPoint;
 
-        /
+        
     }
  
 }
