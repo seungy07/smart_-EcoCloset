@@ -38,15 +38,15 @@ public class RecycleView {
                 // 의류 번호를 선택할 부분
                 System.out.println();
                 System.out.print("관리할 의류 번호 선택(뒤로가기: 0) >> ");
-                int ch = scanner.nextInt();
+                int ch_no = scanner.nextInt();
                 
-                if (ch == 0) {
+                if (ch_no == 0) {
                     break;
                 }
 
                 for(RecycleDto dto : result){
-                    if (dto.getNo() == ch) {
-                        recycleAdd(ch, dto);
+                    if (dto.getNo() == ch_no) {
+                        reCycleAdd(ch_no, dto);
                         break;
                     }
                 }
@@ -59,8 +59,8 @@ public class RecycleView {
         }
     }
 
-    // 기부or중고거래 처리 메소드 -> clothes 테이블에서 삭제, 
-    public void recycleAdd(int ch, RecycleDto dto){
+    // 기부or중고거래 처리 메소드 -> clothes 테이블에서 삭제 X
+    public void reCycleAdd(int ch_no, RecycleDto dto){
         while (true) {
             try {
                 System.out.println();
@@ -69,10 +69,16 @@ public class RecycleView {
                 System.out.println();
                 System.out.println("착용횟수 - " + dto.getWearCount() + "회"); // DTO에서 꺼내옴
                 System.out.println("마지막 착용 - " + dto.getDate());
-                System.out.println("미착용 기간 - " + dto.getUnusedDays() + "일");
+                System.out.println("미착용 기간 - " + dto.getUnUsedDays() + "일");
                 System.out.println();
-                System.out.println("이 옷을 어떻게 관리하시겠습니까?");
-                System.out.println("1. 계속 보관 2. 기부 3. 나눔 4. 중고판매 5. 의류 폐기");
+                System.out.println("> 이 옷을 어떻게 관리하시겠습니까?");
+                System.out.println("> 1. 계속 보관 2. 기부 3. 나눔 4. 중고판매 5. 의류 폐기");
+                int caseNum = scanner.nextInt();
+                boolean result = rc.reCycleAdd(ch_no, caseNum, dto);
+
+                if (result) {
+                    System.out.println("> ");
+                }
 
             } catch (InputMismatchException e) {
                 scanner = new Scanner(System.in, "EUC-KR");

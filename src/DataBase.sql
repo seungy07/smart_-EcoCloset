@@ -1118,7 +1118,6 @@ select
     GROUP BY u.m_no, cl.cl_no, cl.cl_name
     HAVING MAX(w.w_context) IS NULL OR DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;
 
-
 -- ----------------------------------------
 -- 장기 미착용 의류
 -- ----------------------------------------

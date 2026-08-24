@@ -17,4 +17,10 @@ public class RecycleController {
 
         return result;
     }
+
+    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto){
+        boolean result = rd.reCycleAdd(ch_no, caseNum, dto);
+
+        return result;
+    }
 }

@@ -23,7 +23,7 @@ public class RecycleDao extends BaseDao{
                                 "DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'\r\n" + //
                                 "from users u inner join clothes cl on u.m_no = cl.m_no\r\n" + //
                                 "join wearlog w on cl.cl_no = w.cl_no\r\n" + //
-                                "WHERE u.m_no = ?\r\n" + //
+                                "WHERE u.m_no = 1\r\n" + //
                                 "GROUP BY u.m_no, cl.cl_no, cl.cl_name\r\n" + //
                                 "HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;";
 
@@ -52,5 +52,47 @@ public class RecycleDao extends BaseDao{
         }
         
         return list; // 레코드 담은 배열 반환
+    }
+
+    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto){
+        boolean result = false;
+        String reTypeStr = ""; // 어떻게 처리하는지를 담은 문자열(caseNum에 따라 달라짐)
+        try {
+            // 2-1. 처리 유형에 따른 문자열 지정
+            if (caseNum == 1) {
+                System.out.println("> 해당 의류를 계속 보관합니다.");
+                return false;
+            } else if (caseNum == 2) {
+                reTypeStr = "기부";
+            } else if (caseNum == 3) {
+                reTypeStr = "나눔";
+            } else if (caseNum == 4) {
+                reTypeStr = "중고판매";
+            } else if (caseNum == 5) {
+                reTypeStr = "폐기";
+            } else {
+                System.out.println(">유효하지 않은 입력으로 인해 처리가 중단되었습니다.");
+                return result;
+            }
+
+            // 2-2. SQL 작성
+            String sql = "UPDATE clothes SET re_type = ? WHERE cl_no = ?";
+            // 2-2. 연동된 DB에 SQL 기재
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            // 2-3. 와일드카드에 선택한 의류번호 넣기(cl_no)
+            ps.setString(1, reTypeStr);
+            ps.setInt(2, ch_no);
+
+            // 2-4. 기재된 SQL 실행
+            // executeUpdate()를 조건문 안에다만 작성해도, 일단 조건문을 평가하기 위해 메서드를 무조건 실행하므로 실제로도 작동함
+            if (ps.executeUpdate() > 0) { 
+                result = true;
+            }
+        } catch (Exception e) {
+            System.out.println("처리 중 오류가 발생했습니다." + e);
+        }
+
+        return result;
     }
 }
