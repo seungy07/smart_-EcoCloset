@@ -51,7 +51,7 @@ public class MemberDao extends BaseDao{
     }
 
     // 3. 로그인
-    public MemberDao login(String m_id, String m_pwd){
+    public MemberDto login(String m_id, String m_pwd){
         try{
             String sql = "select * from users where m_id = ? and m_pwd = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -67,6 +67,7 @@ public class MemberDao extends BaseDao{
                     rs.getString("m_id"),
                     rs.getString("m_pwd")
                 );
+                return memberDto;
             }
         }catch(Exception e){
             System.out.println(e);

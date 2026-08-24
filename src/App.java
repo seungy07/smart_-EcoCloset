@@ -1,8 +1,8 @@
-import view.ClosetView;
-import view.RecycleView;
+
+import view.MemberView;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        RecycleView.getInstance().unusedReport();
-    }
-}
+        MemberView.getInstance().run();
+    }}
+
