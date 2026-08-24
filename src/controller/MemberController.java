@@ -88,4 +88,13 @@ public class MemberController {
             return "Lv.5 숲";
    }
 }
+
+   // 8. Eco Point 조회
+   public int ecoPoint(){
+     if(loginMember == null){
+          return 0;
+     }
+     int m_no = loginMember.getM_no();
+     return memberDao.ecoPoint(m_no);
+   }
 }
