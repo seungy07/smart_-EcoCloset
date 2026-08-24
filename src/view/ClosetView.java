@@ -40,8 +40,8 @@ public class ClosetView {
 
                 if(ch==1){ my_closet(); }  // 1.내 옷장
                 else if(ch==2){} // 2. 코디 추천
-                else if(ch==3){ } // 3. 의류 활용도
-                else if(ch==4){} // 4. 미착용 의류
+                else if(ch==3){  } // 3. 의류 활용도
+                else if(ch==4){ RecycleView.getInstance().unusedReport(); } // 4. 미착용 의류
                 else if(ch==5){} // 5. 마이 의류 관리
                 else if(ch==0){}  // 0. 로그아웃
 
