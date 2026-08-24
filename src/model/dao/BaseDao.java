@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class BaseDao {
     // 1. 연동 정보
-    private String url = "jdbc:mysql://127.0.0.1:3306/mydb0813";
+    private String url = "jdbc:mysql://127.0.0.1:3306/smart_closet";
     private String user = "root";
     private String password = "1234";
 
