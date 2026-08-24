@@ -1,14 +1,13 @@
 package controller;
 
-import model.dao.CodiDao;
-import model.dto.CodiDto;
-import model.dto.SeasonClothesDto;
-import model.dto.WearDto;
+import model.dao.CodiDao.*;
+import model.dto.CodiDto.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class CodiController {
     private static CodiController instance = new CodiController();
@@ -25,9 +24,13 @@ public class CodiController {
         return CodiDao.getInstance().seasonSearch(mNo, season);
     }
 
-    // 코디 추천 로직
-    public ArrayList<CodiDto> outfitRecommend(ArrayList<SeasonClothesDto> clothesList, String preferredColor) {
-        ArrayList<CodiDto> recommendations = new ArrayList<>();
+    // 코디 추천 로직 (중복 허용 무작위 추출)
+    public CodiDto outfitRecommend(ArrayList<SeasonClothesDto> clothesList, String preferredColor) {
+        if (clothesList == null || clothesList.isEmpty()) {
+            return null;
+        }
+
+        ArrayList<CodiDto> allCombinations = new ArrayList<>();
 
         // 카테고리별 분리 (1000: 상의, 2000: 하의, 3000: 아우터, 4000: 신발)
         List<SeasonClothesDto> tops = new ArrayList<>();
@@ -43,28 +46,40 @@ public class CodiController {
             else if (mainCategory == 4) shoes.add(c);
         }
 
-        // 착용 횟수 적은 순 + 색상 매칭 추천 생성
-        for (SeasonClothesDto top : tops) {
-            for (SeasonClothesDto bottom : bottoms) {
-                // 색상 매칭 조건 검사
-                if (isColorMatch(top.getClColor(), bottom.getClColor(), preferredColor)) {
-                    SeasonClothesDto outer = outers.isEmpty() ? null : outers.get(0);
-                    SeasonClothesDto shoe = shoes.isEmpty() ? null : shoes.get(0);
-
-                    CodiDto codi = new CodiDto(outer, top, bottom, shoe, "미니멀 데일리 룩");
-                    recommendations.add(codi);
-
-                    if (recommendations.size() >= 3) break; // 최대 3개 추천
-                }
-            }
-            if (recommendations.size() >= 3) break;
+        // 필수 항목인 상의와 하의가 없으면 추천 불가
+        if (tops.isEmpty() || bottoms.isEmpty()) {
+            return null;
         }
 
-        return recommendations;
+        // 모든 상/하의 및 아우터/신발 조합 생성
+        for (SeasonClothesDto top : tops) {
+            for (SeasonClothesDto bottom : bottoms) {
+                if (isColorMatch(top.getClColor(), bottom.getClColor(), preferredColor)) {
+                    // 아우터와 신발이 있으면 무작위 선별, 없으면 null
+                    SeasonClothesDto outer = outers.isEmpty() ? null : outers.get(new Random().nextInt(outers.size()));
+                    SeasonClothesDto shoe = shoes.isEmpty() ? null : shoes.get(new Random().nextInt(shoes.size()));
+
+                    CodiDto codi = new CodiDto(outer, top, bottom, shoe);
+                    allCombinations.add(codi);
+                }
+            }
+        }
+
+        if (allCombinations.isEmpty()) {
+            return null;
+        }
+
+        // 전체 완성된 조합 중 무작위 1개 추천
+        Random random = new Random();
+        int randomIndex = random.nextInt(allCombinations.size());
+
+        return allCombinations.get(randomIndex);
     }
 
     // 색상 조합 규칙
     private boolean isColorMatch(String topColor, String bottomColor, String preferredColor) {
+        if (topColor == null || bottomColor == null) return false;
+
         topColor = topColor.toLowerCase();
         bottomColor = bottomColor.toLowerCase();
 
@@ -110,7 +125,7 @@ public class CodiController {
     }
 
     // 착용 기록 등록
-    public boolean wearAdd(WearDto wearDto) {
+    public boolean wearAdd(WearLogDto wearDto) {
         return CodiDao.getInstance().wearAdd(wearDto);
     }
 
