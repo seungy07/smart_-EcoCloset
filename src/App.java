@@ -1,7 +1,12 @@
+
+import java.lang.reflect.Member;
+
 import view.ClosetView;
+import view.MemberView;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        ClosetView.getInstance().main_menu();
-    }
-}
+        MemberView.getInstance().run();
+    }}
+
+
