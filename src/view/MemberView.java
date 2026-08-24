@@ -39,7 +39,7 @@ public class MemberView {
                 signUp();
             }
             else if( ch == 3){System.out.println("프로그램을 종료합니다.");} 
-            else{{System.out.println("[경고] 잘못된 번호입니다."); break;}}
+            else{{System.out.println("[경고] 잘못된 번호입니다.");}}
         }
 
     }
@@ -63,9 +63,9 @@ public class MemberView {
             System.out.println(
                 memberController.getLoginMember().getM_no() +"님 환영합니다."
             );
-            
 
             // 로그인 성공 후 메인화면 이동
+
             ClosetView.getInstance().main_menu();
         }else{
             System.out.println("[경고] 아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -97,7 +97,7 @@ public class MemberView {
             System.out.println("[안내] 회원가입이 완료되었습니다.");
         }else{System.out.println("[경고] 회원가입에 실패했습니다.");}
 
-        
+        // 추후 Controller 연동 예쩡
 
 }
 }

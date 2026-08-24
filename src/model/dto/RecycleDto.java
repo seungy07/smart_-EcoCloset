@@ -8,11 +8,10 @@ public class RecycleDto {
     int unUsedDays;
     
     public RecycleDto(){}
-    public RecycleDto(int no, String name, String date, int days, int unUsedDays) {
+    public RecycleDto(int no, String name, String date, int unUsedDays) {
         this.no = no;
         this.name = name;
         this.date = date;
-        this.days = days;
         this.unUsedDays = unUsedDays;
     }
     
@@ -33,12 +32,6 @@ public class RecycleDto {
     }
     public void setDate(String date) {
         this.date = date;
-    }
-    public int getDays() {
-        return days;
-    }
-    public void setDays(int days) {
-        this.days = days;
     }
 
     public int getUnUsedDays() {

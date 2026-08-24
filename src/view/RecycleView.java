@@ -30,7 +30,10 @@ public class RecycleView {
 
                 // 장기 미착용 의류 출력하는 부분
                 ArrayList<RecycleDto> result = rc.unusedReport();
-                System.out.println(result);
+                
+                for(RecycleDto dto : result){
+                    System.out.println("  " + dto.getNo() + " - " + dto.getName() + " - " + dto.getDate() + " - " + dto.getUnUsedDays()+"일");
+                }
 
                 // 의류 번호를 선택할 부분
                 System.out.println();
