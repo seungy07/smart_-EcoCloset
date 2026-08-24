@@ -73,7 +73,8 @@ public class MemberController {
    // [7] Eco Level 계산
    public String ecoLevelCheck(int ecoPoint){
      if(ecoPoint < 100){
-          return "LV.1 씨앗";}
+          return "LV.1 씨앗";
+        }
           else if(ecoPoint < 250){
             return "Lv.2 새싹";
         }
