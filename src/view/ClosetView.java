@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import java.util.InputMismatchException;
 import controller.ClosetController;
+import controller.MemberController;
 import model.dto.ClosetDto;
 
 // 추가 및 수정 사항들
@@ -51,7 +52,7 @@ public class ClosetView {
     // 내 옷장 관리
     public void my_closet(){
         System.out.println("==============================");
-        System.out.println("            내 옷장");
+        System.out.println("            내 옷장 관리");
         System.out.println("==============================");
         System.out.println(" ");
         System.out.println("1. 의류 등록 ");
@@ -90,7 +91,7 @@ public class ClosetView {
         System.out.print("의류 이름: ");  String cl_name = scan.next();
 
         ClosetDto closetDto = new ClosetDto(); // 받은 정보를 담을 객체 생성
-        closetDto.setM_no(1); // 임시 회원 번호(테스트용) 추후 로그인한 정보에서 회원번호 호출해서 불러옴
+        closetDto.setM_no( 1); // 임시 회원 번호(테스트용) 추후 로그인한 정보에서 회원번호 호출해서 불러옴
         closetDto.setC_no(c_no);
         closetDto.setCl_color(cl_color);
         closetDto.setCl_name(cl_name);
@@ -98,6 +99,19 @@ public class ClosetView {
         boolean result = cl_c.clothesAdd(closetDto);
         if(result){System.out.println("의류 등록 성공");}
         else{System.out.println("의류 등록 실패");}
+    }
+
+    // 의류 전체조회
+    public void clothesPrintAll(){
+        
+
+
+        System.out.println("==============================");
+        System.out.println("            내 옷장");
+        System.out.println("==============================");
+
+        
+
     }
 
     
