@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import model.dto.ClosetDto;
 
 public class ClosetDao extends BaseDao{
-    private ClosetDao(){super();}
+    private ClosetDao(){}
     private static final ClosetDao instance = new ClosetDao();
     public static ClosetDao getInstance(){return instance;}
 
