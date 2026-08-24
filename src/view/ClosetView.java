@@ -70,7 +70,7 @@ public class ClosetView {
         System.out.print("선택>>> "); int ch = scan.nextInt();
 
         if(ch==1){ clothesAdd(); }  // 의류 등록
-        else if(ch==2){}  // 카테고리별 의류 조회 및 삭제 페이지
+        else if(ch==2){clothesPrintAll();}  // 카테고리별 의류 조회 및 삭제 페이지
         else if(ch==0){ return; }  // 뒤로가기 메인 메뉴
         else{System.out.println("다시 입력 해주세요."); my_closet(); }
     }
@@ -138,6 +138,7 @@ public class ClosetView {
             );
         }
         System.out.println("------------------------------------");
+        // 현재 출력해주고 다시 메인 메뉴로 넘어가 버림 **
         // 의류 개별조회 선택부분 --> 의류 삭제
         
     }
