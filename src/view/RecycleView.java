@@ -67,7 +67,12 @@ public class RecycleView {
                 System.out.println();
                 System.out.printf("[%s]", dto.getName()); // 관리하려는 의류 이름 불러와야 함
                 System.out.println();
-                //System.out.println("착용횟수: "+ count + "");// unusedReport() 하고 여기서 잠깐 멈춤!
+                System.out.println("착용횟수 - " + dto.getWearCount() + "회"); // DTO에서 꺼내옴
+                System.out.println("마지막 착용 - " + dto.getDate());
+                System.out.println("미착용 기간 - " + dto.getUnusedDays() + "일");
+                System.out.println();
+                System.out.println("이 옷을 어떻게 관리하시겠습니까?");
+                System.out.println("1. 계속 보관 2. 기부 3. 나눔 4. 중고판매 5. 의류 폐기");
 
             } catch (InputMismatchException e) {
                 scanner = new Scanner(System.in, "EUC-KR");
