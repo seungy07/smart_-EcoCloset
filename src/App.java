@@ -1,7 +1,4 @@
 
-import java.lang.reflect.Member;
-
-import view.ClosetView;
 import view.MemberView;
 
 public class App {
