@@ -14,6 +14,7 @@ import model.dto.ClosetDto;
    메인 메뉴에서 다른 페이지들 넘어가는 부분 메소드  */
 
 public class ClosetView {
+
     private ClosetView(){}
     private static final ClosetView instance = new ClosetView();
     public static ClosetView getInstance(){ return instance; }
@@ -96,13 +97,8 @@ public class ClosetView {
         System.out.println("");
         System.out.print("의류 이름: ");  String cl_name = scan.next();
 
-
-        // 현재 로그인한 회원번호
-        int m_no =  getLoginMno();
-
         ClosetDto closetDto = new ClosetDto();  // 입력받은 의류 정보를 저장할 객체 생성                                      
     
-        closetDto.setM_no(m_no); // 현재 로그인한 회원번호
         closetDto.setC_no(c_no);
         closetDto.setCl_color(cl_color);
         closetDto.setCl_name(cl_name);
