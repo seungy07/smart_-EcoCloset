@@ -26,7 +26,7 @@ public class ClosetController {
         closetDto.setM_no(m_no);
 
         return closetDao.clothesAdd(closetDto);
-    }
+    
         
 
         if(closetDto.getM_no() <= 0){ // 회원 번호가 있는지 검사
