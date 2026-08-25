@@ -3,7 +3,6 @@ package view;
 import controller.CodiController;
 import model.dto.CodiDto;
 import model.dto.MemberDto;
-import controller.MemberController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,8 +32,8 @@ public class CodiView {
             // 1. Controller 및 DB 호출 예외 처리
             try {
 
-                ArrayList<CodiDto> seasonClothes = cc.seasonSearch(loginMNo);
-                codi = cc.outfitRecommend(seasonClothes, "all");
+                ArrayList<CodiDto> filterClothes = cc.filterSearch();
+                codi = cc.outfitRecommend(filterClothes, "all");
 
             } catch (Exception e) {
                 System.out.println("(오류) 데이터 불러오는 중 시스템에러 발생.");
