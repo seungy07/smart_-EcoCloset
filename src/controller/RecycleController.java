@@ -55,4 +55,8 @@ public class RecycleController {
 
         return result;
     }
+
+    public void recyclePrint(){
+        
+    }
 }

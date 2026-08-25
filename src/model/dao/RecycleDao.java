@@ -179,4 +179,31 @@ public class RecycleDao extends BaseDao{
 
         return result;
     }
+
+    public void recyclePrint(){
+        // 결과물을 담아서 보낼 리스트
+        ArrayList<RecycleDto> list = new ArrayList<>();
+
+        // ps와 rs 변수를 미리 선언해 둠(재사용)
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        // [1] 현재 보유중인 의류 총합 쿼리
+
+        // [2] 이번 달 착용한 횟수를 담을 부분
+
+        // [3] 90일 이상 미착용한 의류 총합을 뽑아올 부분
+
+        // [4] 기부할 옷의 총합을 뽑아올 부분
+
+        // [5] 나눔한 옷의 총합을 뽑아올 부분
+
+        // [6] 중고판매한 옷의 총합을 뽑아올 부분
+
+        // [7] 총 순환 의류를 뽑아올 부분
+
+        // [8] 가장 많이 입은 옷의 이름과 착용 횟수를 가져올 부분
+
+        // [9] 가장 오래 입지 않은 옷의 이름과 착용 횟수를 가져올 부분
+    }
 }
