@@ -83,7 +83,6 @@ public class ClosetView {
         System.out.println("            의류 등록  ");
         System.out.println("=============================");
         System.out.println(" ");
-        System.out.println("(상의 1,하의 2,아우터 3,신발 4), \n(계절 ss: 1 fw: 2, all: 3), 0 , (상세 유형) ");
         System.out.println("상세 유형: \n1101 반팔티 | 1102 나시 | 1201 긴팔티 | 1202 니트 | 1301 셔츠\n"
         + "           2101 반바지 | 2301 긴바지 | 2302 치마\n"
         + "           3201 패딩 | 3202 코트 | 3203 가디건\n"
@@ -126,7 +125,7 @@ public class ClosetView {
             System.out.println("등록된 나의 옷이 없습니다. :)");
             return;
         }
-        System.out.println("의류번호\t카테고리\t색상\n의류이름");
+        System.out.println("의류번호  카테고리  색상  의류이름");
         System.out.println("-------------------------------------");
 
         for(ClosetDto list : result){
@@ -143,7 +142,11 @@ public class ClosetView {
         try{
             int cl_no = scan.nextInt();
             if(cl_no == 0){ return;}
-            clothesPrint(cl_no); 
+
+            // 의류번호 검사(옷장에 존재여부) 
+            boolean check = cl_c.clothesNoCheck(m_no, cl_no);
+            if(check){clothesPrint(cl_no);}else{System.out.println("해당하는 의류가 없습니다.");}
+
         } catch (InputMismatchException e) { 
             scan = new Scanner(System.in); System.out.println("정수만 입력 "+e);}
        
@@ -171,13 +174,16 @@ public class ClosetView {
         System.out.println("2. 뒤로가기");
         System.out.print("선택>>"); int ch = scan.nextInt();
 
-        if(ch==1){} // 삭제 
+        if(ch==1){clothesDelete(m_no,cl_no);} // 삭제 
         if(ch==0){return;}
     }
 
     // 의류 삭제
-
-    
-    
-
+    public void clothesDelete(int m_no, int cl_no){
+        boolean result = cl_c.clothesDelete(m_no,cl_no);
+        if(result){
+            System.out.println("의류 삭제되었습니다.");
+        }else{System.out.println("의류 삭제에 실패했습니다.");}
+    }
+ 
 }
