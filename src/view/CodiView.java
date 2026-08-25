@@ -18,9 +18,10 @@ public class CodiView {
 
     private Scanner scanner = new Scanner(System.in);
 
+    CodiController cc = CodiController.getInstance();
 
-    public void recommendView() {
 
+    public void recommendView(int loginMNo) {
         while (true) {
             
             System.out.println("\n==================================================");
@@ -31,8 +32,10 @@ public class CodiView {
            
             // 1. Controller 및 DB 호출 예외 처리
             try {
-                ArrayList<SeasonClothesDto> seasonClothes = CodiController.getInstance().seasonSearch(m_no);
-                codi = CodiController.getInstance().outfitRecommend(seasonClothes, "all");
+
+                ArrayList<CodiDto> seasonClothes = cc.seasonSearch(loginMNo);
+                codi = cc.outfitRecommend(seasonClothes, "all");
+
             } catch (Exception e) {
                 System.out.println("(오류) 데이터 불러오는 중 시스템에러 발생.");
                 return;

@@ -1,13 +1,7 @@
 package controller;
 
 import model.dao.CodiDao;
-<<<<<<< HEAD
-import model.dao.CodiDao.*;
 import model.dto.CodiDto;
-import model.dto.CodiDto.*;
-=======
-import model.dto.CodiDto;
->>>>>>> ebd4ed56325044bf1ee802b56978d4b04738bbec
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,17 +20,7 @@ public class CodiController {
     private final List<String> NEUTRAL_COLORS = Arrays.asList("white", "black", "gray");
 
     // 계절 매칭 검사 (3~9월: SS(1), 10~2월: FW(2))
-    public ArrayList<SeasonClothesDto> seasonSearch() {
-
-        // 현재 로그인 된 회원
-        MemberDto loginMember =
-        MemberController.getInstance().getLoginMember();
-
-        if(loginMember == null){
-        return new ArrayList<>();}
-
-        int mNo = loginMember.getM_no();
-
+    public ArrayList<CodiDto> seasonSearch(int mNo) {
         int month = LocalDate.now().getMonthValue();
         int season = (month >= 3 && month <= 9) ? 1 : 2; // 1: SS, 2: FW
         return CodiDao.getInstance().seasonSearch(mNo, season);
