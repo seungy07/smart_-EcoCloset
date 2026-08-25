@@ -17,17 +17,19 @@ public class CodiView {
 
     private Scanner scanner = new Scanner(System.in);
 
-    public void recommendView(int loginMNo) {
+
+    public void recommendView() {
+
         while (true) {
             System.out.println("\n==================================================");
             System.out.println("               [ 코디 추천 메뉴 ]                  ");
             System.out.println("==================================================");
 
             CodiDto codi = null;
-
+           
             // 1. Controller 및 DB 호출 예외 처리
             try {
-                ArrayList<SeasonClothesDto> seasonClothes = CodiController.getInstance().seasonSearch(loginMNo);
+                ArrayList<SeasonClothesDto> seasonClothes = CodiController.getInstance().seasonSearch(m_no);
                 codi = CodiController.getInstance().outfitRecommend(seasonClothes, "all");
             } catch (Exception e) {
                 System.out.println("(오류) 코디 추천 데이터를 불러오는 중 시스템 에러가 발생했습니다.");
