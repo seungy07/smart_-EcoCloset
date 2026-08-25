@@ -38,7 +38,7 @@ public class ClosetView {
                 System.out.println("1. 내 옷장 관리 ");
                 System.out.println("2. 코디 추천받기 ");
                 System.out.println("3. 의류 활용도 분석 ");
-                System.out.println("4. 미착용 의류 관리 ");
+                System.out.println("4. 장기 미착용 의류 관리 ");
                 System.out.println("5. 마이 의류 리포트 ");
                 System.out.println(" ");
                 System.out.println("0. 로그 아웃 ");
@@ -49,7 +49,7 @@ public class ClosetView {
                 if(ch==1){ my_closet(); }  // 1.내 옷장
                 else if(ch==2){} // 2. 코디 추천
                 else if(ch==3){} // 3. 의류 활용도
-                else if(ch==4){ RecycleView.getInstance().unusedReport(); } // 4. 미착용 의류
+                else if(ch==4){ RecycleView.getInstance().unusedReport(); } // 4. 장기 미착용 의류
                 else if(ch==5){} // 5. 마이 의류 관리
                 else if(ch==0){MemberController.getInstance().logout();  MemberView.getInstance().run();}  // 0. 로그아웃
 
