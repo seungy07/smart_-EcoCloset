@@ -64,6 +64,7 @@ public class RecycleView {
                 scanner = new Scanner(System.in, "EUC-KR");
                 System.out.println("> 유효하지 않은 입력입니다.  " + e);
             }
+            
         }
     }
 
@@ -93,6 +94,55 @@ public class RecycleView {
                 scanner = new Scanner(System.in, "EUC-KR");
                 System.out.println("> 유효하지 않은 입력입니다.  " + e);
             }
+        }
+    }
+
+    public void usageReport(){
+        System.out.println("====================================");
+        System.out.println("    의류 활용도 분석(누적 횟수");
+        System.out.println("====================================");
+        System.out.println();
+        System.out.println("1. 가장 많이 입은 옷");
+        System.out.println("2. 가장 적게 입은 옷");
+        System.out.println("3. 장기 미착용 의류");
+        while (true) {
+            System.out.print("선택(뒤로가기: 0)>> "); int ch = scanner.nextInt();
+
+            if (ch == 1) {
+                ArrayList<RecycleDto> result = rc.findMaxWearCount();
+                System.out.println();
+                System.out.println("[가장 많이 입은 옷]");
+                System.out.println("---------------------------------");
+                // for(RecycleDto dto : result){
+                //     System.out.println(dto.getName()+dto.getWearCount());
+                // }
+                for(int i = 0; i <= 2; i++){
+                    System.out.println((i+1) + "위 " + result.get(i).getName() + " - " +result.get(i).getWearCount()+"회");
+                }
+                System.out.println();
+
+                break;
+            } else if (ch == 2) {
+                ArrayList<RecycleDto> result = rc.findMinWearCount();
+                System.out.println();
+                System.out.println("[가장 적게 입은 옷]");
+                System.out.println("---------------------------------");
+                // for(RecycleDto dto : result){
+                // System.out.println(dto.getName()+dto.getWearCount());
+                // }
+                for (int i = 0; i <= 2; i++) {
+                    System.out.println(
+                            (i + 1) + "위 " + result.get(i).getName() + " - " + result.get(i).getWearCount() + "회");
+                }
+                System.out.println();
+
+                break;
+            } else if (ch == 3) {
+                unusedReport();
+                break;
+            } else if (ch == 0) {
+                break;
+            } 
         }
     }
 }

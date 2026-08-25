@@ -1093,55 +1093,25 @@ UPDATE clothes SET re_type = '폐기' WHERE cl_no = 299;
 
 
 select
+    u.m_no AS "회원번호(PK)",
     cl.cl_no AS "의류번호(PK)",
-    cl.cl_name AS '의류이름', 
-    COUNT(w.w_no) AS '착용횟수',
-    MAX(w.w_context) AS '마지막 착용',
-    DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'
-    from users u inner join clothes cl on u.m_no = cl.m_no
-    left join wearlog w on cl.cl_no = w.cl_no
-    WHERE u.m_no = 1
-    GROUP BY u.m_no, cl.cl_no, cl.cl_name;
+    cl.cl_name AS "의류이름",
+    w.w_context AS "착용일"
+    FROM users u
+    inner join clothes cl on u.m_no = cl.m_no
+    LEFT join wearlog w on cl.cl_no = w.cl_no
+    WHERE u.m_no = 1;
 
+SELECT 
+    cl.cl_no AS '의류번호',
+    cl.cl_name AS '의류이름',
+    COUNT(w.w_no) AS '착용횟수'
+FROM users u
+INNER JOIN clothes cl ON u.m_no = cl.m_no
+JOIN wearlog w ON cl.cl_no = w.cl_no
+WHERE u.m_no = 1
+GROUP BY cl.cl_no, cl.cl_name
+ORDER BY 착용횟수 DESC
+LIMIT 3;
 
-
--- RecycleDto select문
-select
-    cl.cl_no AS "의류번호(PK)",
-    cl.cl_name AS '의류이름', 
-    COUNT(w.w_no) AS '착용횟수',
-    MAX(w.w_context) AS '마지막 착용',
-    IFNULL(DATEDIFF(CURDATE(), MAX(w.w_context)), -1) AS '미착용일'
-    from users u inner join clothes cl on u.m_no = cl.m_no
-    left join wearlog w on cl.cl_no = w.cl_no
-    WHERE u.m_no = 1
-    GROUP BY u.m_no, cl.cl_no, cl.cl_name
-    HAVING MAX(w.w_context) IS NULL OR DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;
-
--- ----------------------------------------
--- 장기 미착용 의류
--- ----------------------------------------
-
--- 최근 90일 이상 착용하지 않은 옷
-
--- 번호 - 의류 - 마지막 착용 - 미착용 기간
-
--- 3 - 회색 니트 - 2026-03-28 - 145일
--- 4 - 검정 셔츠 - 2026-05-03 - 109일
-
--- 관리할 의류 번호 >> 3
-
-
--- [회색 니트]
-
--- 착용횟수 - 2회
--- 마지막 착용 - 2026-03-28
--- 미착용 기간 - 145일
-
--- 이 옷을 어떻게 관리하시겠습니까?
-
--- 1. 계속 보관
--- 2. 기부
--- 3. 나눔
--- 4. 중고판매
--- 5. 의류 폐기
+select * from clothes cl LEFT join wearlog w on cl.cl_no = w.cl_no; 
