@@ -17,11 +17,6 @@ public class RecycleView {
 
     private RecycleController rc = RecycleController.getInstance();
 
-    // 로그인한 멤버 번호 불러오는 메서드 = getLoginMember()
-    private MemberController m_c = MemberController.getInstance();
-    private int getLoginMno(){ return m_c.getLoginMember().getM_no(); }
-    int m_no = getLoginMno();
-
     Scanner scanner = new Scanner(System.in);
 
     // 장기 미착용 의류 목록 출력하는 부분
@@ -54,7 +49,7 @@ public class RecycleView {
 
                 for(RecycleDto dto : result){
                     if (dto.getNo() == ch_no) {
-                        reCycleAdd(ch_no, dto, m_no);
+                        reCycleAdd(ch_no, dto);
                         break;
                     }
                 }
@@ -69,7 +64,7 @@ public class RecycleView {
     }
 
     // 기부or중고거래 처리 메소드 -> clothes 테이블에서 삭제 X
-    public void reCycleAdd(int ch_no, RecycleDto dto, int m_no){
+    public void reCycleAdd(int ch_no, RecycleDto dto){
         while (true) {
             try {
                 System.out.println();
@@ -83,7 +78,7 @@ public class RecycleView {
                 System.out.println("> 이 옷을 어떻게 관리하시겠습니까?");
                 System.out.print("> 1. 계속 보관 2. 기부 3. 나눔 4. 중고판매 5. 의류 폐기: ");
                 int caseNum = scanner.nextInt();
-                boolean result = rc.reCycleAdd(ch_no, caseNum, dto, m_no);
+                boolean result = rc.reCycleAdd(ch_no, caseNum, dto);
 
                 if (result) {
                     System.out.println(">>>>>>>>>>>>>>>>>>>>>");

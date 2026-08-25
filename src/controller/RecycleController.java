@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import model.dao.RecycleDao;
+import model.dto.MemberDto;
 import model.dto.RecycleDto;;
 
 public class RecycleController {
@@ -11,32 +12,46 @@ public class RecycleController {
     public static RecycleController getInstance() { return instance; }
     private RecycleDao rd = RecycleDao.getInstance();
 
-    // 로그인한 멤버 번호 불러오는 메서드 = getLoginMember()
-    private MemberController m_c = MemberController.getInstance();
-    private int getLoginMno(){ return m_c.getLoginMember().getM_no(); }
-    // int m_no = getLoginMno();
+    // 현재 로그인한 회원 번호 가져오기
+    private int getLoginM_no(){
+        MemberDto loginM_no =
+            MemberController.getInstance().getLoginMember();
+        // 로그인 상태가 아니면 등록 불가
+        if(loginM_no == null){
+            return -1;
+        }
+        return loginM_no.getM_no();
+
+    }
 
     public ArrayList<RecycleDto> unusedReport(){
-        
-        ArrayList<RecycleDto> result = rd.unusedReport();
+        int m_no = getLoginM_no();
+        if(m_no == -1){return new ArrayList<>();}
+        ArrayList<RecycleDto> result = rd.unusedReport(m_no);
 
         return result;
     }
 
-    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto, int m_no){
+    public boolean reCycleAdd(int ch_no, int caseNum, RecycleDto dto){
+        int m_no = getLoginM_no();
+        if(m_no == -1){return false;}
         boolean result = rd.reCycleAdd(ch_no, caseNum, dto, m_no);
 
         return result;
     }
 
     public ArrayList<RecycleDto> findMaxWearCount(){
-        ArrayList<RecycleDto> result = rd.findMaxWearCount();
+        int m_no = getLoginM_no();
+        if(m_no == -1){return new ArrayList<>();}
+        ArrayList<RecycleDto> result = rd.findMaxWearCount(m_no);
 
         return result;
     }
 
     public ArrayList<RecycleDto> findMinWearCount() {
-        ArrayList<RecycleDto> result = rd.findMinWearCount();
+        int m_no = getLoginM_no();
+        if(m_no == -1){return new ArrayList<>();}
+        ArrayList<RecycleDto> result = rd.findMinWearCount(m_no);
 
         return result;
     }
