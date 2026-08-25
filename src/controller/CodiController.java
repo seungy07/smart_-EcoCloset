@@ -1,9 +1,13 @@
 package controller;
 
 import model.dao.CodiDao;
+<<<<<<< HEAD
 import model.dao.CodiDao.*;
 import model.dto.CodiDto;
 import model.dto.CodiDto.*;
+=======
+import model.dto.CodiDto;
+>>>>>>> ebd4ed56325044bf1ee802b56978d4b04738bbec
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import java.util.Random;
 import model.dto.MemberDto;
 
 public class CodiController {
+    // 싱글톤
     private static CodiController instance = new CodiController();
     private CodiController() {}
     public static CodiController getInstance() { return instance; }
@@ -38,7 +43,7 @@ public class CodiController {
     }
 
     // 코디 추천 로직 (중복 허용 무작위 추출)
-    public CodiDto outfitRecommend(ArrayList<SeasonClothesDto> clothesList, String preferredColor) {
+    public CodiDto outfitRecommend(ArrayList<CodiDto> clothesList, String preferredColor) {
         if (clothesList == null || clothesList.isEmpty()) {
             return null;
         }
@@ -46,12 +51,12 @@ public class CodiController {
         ArrayList<CodiDto> allCombinations = new ArrayList<>();
 
         // 카테고리별 분리 (1000: 상의, 2000: 하의, 3000: 아우터, 4000: 신발)
-        List<SeasonClothesDto> tops = new ArrayList<>();
-        List<SeasonClothesDto> bottoms = new ArrayList<>();
-        List<SeasonClothesDto> outers = new ArrayList<>();
-        List<SeasonClothesDto> shoes = new ArrayList<>();
+        List<CodiDto> tops = new ArrayList<>();
+        List<CodiDto> bottoms = new ArrayList<>();
+        List<CodiDto> outers = new ArrayList<>();
+        List<CodiDto> shoes = new ArrayList<>();
 
-        for (SeasonClothesDto c : clothesList) {
+        for (CodiDto c : clothesList) {
             int mainCategory = c.getCNo() / 1000;
             if (mainCategory == 1) tops.add(c);
             else if (mainCategory == 2) bottoms.add(c);
@@ -65,12 +70,12 @@ public class CodiController {
         }
 
         // 모든 상/하의 및 아우터/신발 조합 생성
-        for (SeasonClothesDto top : tops) {
-            for (SeasonClothesDto bottom : bottoms) {
+        for (CodiDto top : tops) {
+            for (CodiDto bottom : bottoms) {
                 if (isColorMatch(top.getClColor(), bottom.getClColor(), preferredColor)) {
                     // 아우터와 신발이 있으면 무작위 선별, 없으면 null
-                    SeasonClothesDto outer = outers.isEmpty() ? null : outers.get(new Random().nextInt(outers.size()));
-                    SeasonClothesDto shoe = shoes.isEmpty() ? null : shoes.get(new Random().nextInt(shoes.size()));
+                    CodiDto outer = outers.isEmpty() ? null : outers.get(new Random().nextInt(outers.size()));
+                    CodiDto shoe = shoes.isEmpty() ? null : shoes.get(new Random().nextInt(shoes.size()));
 
                     CodiDto codi = new CodiDto(outer, top, bottom, shoe);
                     allCombinations.add(codi);
@@ -138,7 +143,7 @@ public class CodiController {
     }
 
     // 착용 기록 등록
-    public boolean wearAdd(WearLogDto wearDto) {
+    public boolean wearAdd(CodiDto wearDto) {
         return CodiDao.getInstance().wearAdd(wearDto);
     }
 
