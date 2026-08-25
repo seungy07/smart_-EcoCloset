@@ -1119,5 +1119,5 @@ select * from clothes cl LEFT join wearlog w on cl.cl_no = w.cl_no;
 select
     *
     from users u
-    inner join clothes c on u.m_no = cl.m_no
-    LEFT JOIN wearlog w
+    inner join clothes cl on u.m_no = cl.m_no
+    LEFT JOIN wearlog w on cl.cl_no = w.cl_no;
