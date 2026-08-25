@@ -15,9 +15,6 @@ public class CodiDao extends BaseDao {
     //3. 인스턴스(객체)를 반환하는 메소드 생성
     public static CodiDao getInstance() { return instance; }
 
-    //instance.메소드() 아닌 CodiDao.getInstance().메소드() 해야함
-    CodiDao dao = CodiDao.getInstance();
-
     // 1. 계절별 의류 조회 (현재 월 및 로그인한 사용자 m_no 기준)
     // ( c_no / 100) % 10 -> 1: SS, 2: FW, 3: ALL
     public ArrayList<CodiDto> seasonSearch(int mNo, int targetSeason) {
@@ -63,7 +60,7 @@ public class CodiDao extends BaseDao {
             PreparedStatement ps = conn.prepareStatement(sql);
             for (int clNo : wearDto.getClNoList()) {
                 ps.setInt(1, clNo);
-                ps.setString(2, wearDto.getDate());
+                ps.setString(2, wearDto.getWearDate());
                 ps.addBatch();
             }
             ps.executeBatch();
