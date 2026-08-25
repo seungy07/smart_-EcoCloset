@@ -32,4 +32,11 @@ public class ClosetController {
         return result; 
     }
 
+    // 의류 개별 조회 
+    public ClosetDto clothesPrint(int m_no, int cl_no){
+        ClosetDto result = cl_d.clothesPrint(m_no, cl_no);
+        return result;
+    }
+
+    
 }

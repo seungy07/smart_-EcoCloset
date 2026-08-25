@@ -113,7 +113,7 @@ public class ClosetView {
         else{System.out.println("의류 등록 실패");}
     }
 
-    // 의류 전체조회
+    // 의류 전체조회 -> 개별 조회
     public void clothesPrintAll(){
         int m_no = getLoginMno();
         
@@ -138,10 +138,43 @@ public class ClosetView {
             );
         }
         System.out.println("------------------------------------");
-        // 현재 출력해주고 다시 메인 메뉴로 넘어가 버림 **
-        // 의류 개별조회 선택부분 --> 의류 삭제
-        
+        System.out.println("0. 뒤로가기");
+        System.out.print("조회할 의류번호 >>> ");
+        try{
+            int cl_no = scan.nextInt();
+            if(cl_no == 0){ return;}
+            clothesPrint(cl_no); 
+        } catch (InputMismatchException e) { 
+            scan = new Scanner(System.in); System.out.println("정수만 입력 "+e);}
+       
     }
+
+    // 의류 개별조회 -> 삭제
+    public void clothesPrint(int cl_no){
+        int m_no = getLoginMno();
+        ClosetDto result = cl_c.clothesPrint(m_no, cl_no);
+        if( result == null ){
+            System.out.println("해당하는 의류번호가 없습니다.");
+            return ;
+        }
+
+        System.out.println("====================================");
+        System.out.println("            의류 상세조회");
+        System.out.println("====================================");
+        System.out.println("의류번호 : " +result.getCl_no());
+        System.out.println("카테고리 : "+result.getC_no());
+        System.out.println("색상    : "+result.getCl_color());
+        System.out.println("의류이름 : "+result.getCl_name());
+        System.out.println("===================================");
+        System.out.println("");
+        System.out.println("1. 삭제");
+        System.out.println("2. 뒤로가기");
+        System.out.print("선택>>"); int ch = scan.nextInt();
+
+        if(ch==1){} // 삭제 
+        if(ch==0){return;}
+    }
+
     // 의류 삭제
 
     

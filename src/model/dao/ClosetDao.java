@@ -50,6 +50,13 @@ public class ClosetDao extends BaseDao{
         return list;
     }
 
+    // 의류 개별 조회
+    public ClosetDto clothesPrint(int m_no, int cl_no){
+        try{
+            String sql = "select cl_no, c_no, cl_color"
+        }
+    }
+
 
 
     
