@@ -15,9 +15,9 @@ public class CodiDao extends BaseDao {
     //3. 인스턴스(객체)를 반환하는 메소드 생성
     public static CodiDao getInstance() { return instance; }
 
-    // 1. 계절별 의류 조회 (현재 월 및 로그인한 사용자 m_no 기준)
-    // ( c_no / 100) % 10 -> 1: SS, 2: FW, 3: ALL
-    public ArrayList<CodiDto> seasonSearch(int mNo, int targetSeason) {
+    // [ 메소드 1 ] filterSearch : 필터링 된 의류 조회 (현재 월 / 로그인한 회원 번호 기준)
+    // ( 의류번호 / 100) % 10 -> 1: SS, 2: FW, 3: ALL
+    public ArrayList<CodiDto> filterSearch(int mNo, int targetSeason) {
         ArrayList<CodiDto> list = new ArrayList<>();
         // 착용 횟수 적은 순(COUNT(w.w_no) ASC)으로 정렬
         String sql = "SELECT c.cl_no, c.c_no, c.cl_name, c.cl_color, " +
@@ -53,7 +53,7 @@ public class CodiDao extends BaseDao {
     }
 
     // 2. 착용 기록 등록
-    public boolean wearAdd(CodiDto wearDto) {
+    public boolean wearLogAdd(CodiDto wearDto) {
         String sql = "INSERT INTO wearLog(cl_no, w_context) VALUES (?, ?)";
         try {
             conn.setAutoCommit(false);
@@ -75,7 +75,7 @@ public class CodiDao extends BaseDao {
     }
 
     // 3. 마지막 착용일 조회
-    public String wearPrintAll(int clNo) {
+    public String wearLogPrint(int clNo) {
         String sql = "SELECT MAX(w_context) FROM wearLog WHERE cl_no = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
