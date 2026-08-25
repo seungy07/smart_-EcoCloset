@@ -11,8 +11,13 @@ public class RecycleController {
     public static RecycleController getInstance() { return instance; }
     private RecycleDao rd = RecycleDao.getInstance();
 
+    // 로그인한 멤버 번호 불러오는 메서드 = getLoginMember()
+    private MemberController m_c = MemberController.getInstance();
+    private int getLoginMno(){ return m_c.getLoginMember().getM_no(); }
+    // int m_no = getLoginMno();
 
     public ArrayList<RecycleDto> unusedReport(){
+        
         ArrayList<RecycleDto> result = rd.unusedReport();
 
         return result;

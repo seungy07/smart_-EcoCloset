@@ -20,12 +20,12 @@ public class RecycleView {
     // 로그인한 멤버 번호 불러오는 메서드 = getLoginMember()
     private MemberController m_c = MemberController.getInstance();
     private int getLoginMno(){ return m_c.getLoginMember().getM_no(); }
+    int m_no = getLoginMno();
 
     Scanner scanner = new Scanner(System.in);
 
     // 장기 미착용 의류 목록 출력하는 부분
     public void unusedReport(){
-        int m_no = getLoginMno();
         while (true) {
             try {
                 System.out.println("----------------------------------------");
@@ -64,7 +64,7 @@ public class RecycleView {
                 scanner = new Scanner(System.in, "EUC-KR");
                 System.out.println("> 유효하지 않은 입력입니다.  " + e);
             }
-            
+
         }
     }
 
@@ -113,9 +113,6 @@ public class RecycleView {
                 System.out.println();
                 System.out.println("[가장 많이 입은 옷]");
                 System.out.println("---------------------------------");
-                // for(RecycleDto dto : result){
-                //     System.out.println(dto.getName()+dto.getWearCount());
-                // }
                 for(int i = 0; i <= 2; i++){
                     System.out.println((i+1) + "위 " + result.get(i).getName() + " - " +result.get(i).getWearCount()+"회");
                 }
@@ -127,9 +124,6 @@ public class RecycleView {
                 System.out.println();
                 System.out.println("[가장 적게 입은 옷]");
                 System.out.println("---------------------------------");
-                // for(RecycleDto dto : result){
-                // System.out.println(dto.getName()+dto.getWearCount());
-                // }
                 for (int i = 0; i <= 2; i++) {
                     System.out.println(
                             (i + 1) + "위 " + result.get(i).getName() + " - " + result.get(i).getWearCount() + "회");
@@ -144,5 +138,13 @@ public class RecycleView {
                 break;
             } 
         }
+    }
+
+    public void recyclePrint(){
+        System.out.println("--------------------------------------------------");
+        System.out.println( "          ClosetMate 의류 순환 리포트");
+        System.out.println("--------------------------------------------------");
+        System.out.println("");
+        
     }
 }
