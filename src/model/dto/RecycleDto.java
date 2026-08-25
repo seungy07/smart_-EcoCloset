@@ -1,11 +1,17 @@
 package model.dto;
 
 public class RecycleDto {
-    int no;
-    String name;
-    int wearCount;
-    String date;
-    int unUsedDays;
+    int no; // 의류 번호
+    String name; // 의류 이름
+    int wearCount; // 입은 횟수
+    String date; // 마지막 착용일
+    int unUsedDays; // 안입은 일 수
+    int clothesSum; // 현재 보유 의류 총합
+    int unUsedClothesSum; // 90일 이상 미착용한 의류 총합
+    int clothesDonation; // 기부한 옷 총합
+    int clothesShare; // 나눔한 옷 총합
+    int usedClothesSale; //중고판매한 옷 총합
+    
 
     public int getNo() {
         return no;

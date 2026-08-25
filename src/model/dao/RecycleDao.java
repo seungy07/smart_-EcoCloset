@@ -14,12 +14,7 @@ public class RecycleDao extends BaseDao{
     private static final RecycleDao instance = new RecycleDao();
     public static RecycleDao getInstance() { return instance; }
 
-    // 로그인한 멤버 번호 불러오는 메서드 = getLoginMember()
-    private MemberController m_c = MemberController.getInstance();
-    private int getLoginMno(){ return m_c.getLoginMember().getM_no(); }
-
-    public ArrayList<RecycleDto> unusedReport(){
-        int m_no = getLoginMno();
+    public ArrayList<RecycleDto> unusedReport(int m_no){
         ArrayList<RecycleDto> list = new ArrayList<>();
         try {
             // 1-1. SQL 작성
@@ -104,9 +99,8 @@ public class RecycleDao extends BaseDao{
         return result;
     }
 
-    public ArrayList<RecycleDto> findMaxWearCount(){
+    public ArrayList<RecycleDto> findMaxWearCount(int m_no){
         ArrayList<RecycleDto> result = new ArrayList<>();
-        int m_no = getLoginMno();
         try {
             // 1-1. SQL 작성
             String sql = "SELECT \r\n" + //
@@ -146,9 +140,8 @@ public class RecycleDao extends BaseDao{
         return result;
     }
 
-    public ArrayList<RecycleDto> findMinWearCount() {
+    public ArrayList<RecycleDto> findMinWearCount(int m_no) {
         ArrayList<RecycleDto> result = new ArrayList<>();
-        int m_no = getLoginMno();
         try {
             // 1-1. SQL 작성
             String sql = "SELECT \r\n" + //

@@ -21,7 +21,6 @@ public class ClosetController {
             return -1;
         }
         return loginM_no.getM_no();
-
     }
 
     // 의류 등록
