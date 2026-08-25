@@ -20,13 +20,6 @@ public class ClosetView {
     private ClosetController cl_c = ClosetController.getInstance();
     private Scanner scan = new Scanner(System.in);
 
-    // 로그인한 회원 번호 확인용
-    private MemberController m_c = MemberController.getInstance();
-    private int getLoginMno(){
-        return m_c.getLoginMember().getM_no();
-    }
-
-
     // 메인 메뉴
     public void main_menu(){
         while(true){
@@ -46,10 +39,8 @@ public class ClosetView {
                 System.out.print("선택>>>");  
                 int ch = scan.nextInt();
 
-                int m_no =  getLoginMno();
-
                 if(ch==1){ my_closet(); }  // 1.내 옷장
-                else if(ch==2){CodiView.getInstance().recommendView()} // 2. 코디 추천
+                else if(ch==2){} // 2. 코디 추천
                 else if(ch==3){ RecycleView.getInstance().usageReport(); } // 3. 의류 활용도
                 else if(ch==4){ RecycleView.getInstance().unusedReport(); } // 4. 장기 미착용 의류
                 else if(ch==5){} // 5. 마이 의류 관리
@@ -100,11 +91,7 @@ public class ClosetView {
 
 
         // 현재 로그인한 회원번호
-        int m_no =  getLoginMno();
-
         ClosetDto closetDto = new ClosetDto();  // 입력받은 의류 정보를 저장할 객체 생성                                      
-    
-        closetDto.setM_no(m_no); // 현재 로그인한 회원번호
         closetDto.setC_no(c_no);
         closetDto.setCl_color(cl_color);
         closetDto.setCl_name(cl_name);
@@ -116,13 +103,11 @@ public class ClosetView {
 
     // 의류 전체조회 -> 개별 조회
     public void clothesPrintAll(){
-        int m_no = getLoginMno();
-        
         System.out.println("==============================");
         System.out.println("             내 옷장");
         System.out.println("==============================");
 
-        ArrayList<ClosetDto> result = cl_c.clothesPrintAll(m_no);
+        ArrayList<ClosetDto> result = cl_c.clothesPrintAll();
         if(result.isEmpty()){
             System.out.println("등록된 나의 옷이 없습니다. :)");
             return;
@@ -146,7 +131,7 @@ public class ClosetView {
             if(cl_no == 0){ return;}
 
             // 의류번호 검사(옷장에 존재여부) 
-            boolean check = cl_c.clothesNoCheck(m_no, cl_no);
+            boolean check = cl_c.clothesNoCheck( cl_no);
             if(check){clothesPrint(cl_no);}else{System.out.println("해당하는 의류가 없습니다.");}
 
         } catch (InputMismatchException e) { 
@@ -156,8 +141,7 @@ public class ClosetView {
 
     // 의류 개별조회 -> 삭제
     public void clothesPrint(int cl_no){
-        int m_no = getLoginMno();
-        ClosetDto result = cl_c.clothesPrint(m_no, cl_no);
+        ClosetDto result = cl_c.clothesPrint( cl_no);
         if( result == null ){
             System.out.println("해당하는 의류번호가 없습니다.");
             return ;
@@ -176,13 +160,13 @@ public class ClosetView {
         System.out.println("2. 뒤로가기");
         System.out.print("선택>>"); int ch = scan.nextInt();
 
-        if(ch==1){clothesDelete(m_no,cl_no);} // 삭제 
+        if(ch==1){clothesDelete(cl_no);} // 삭제 
         if(ch==0){return;}
     }
 
     // 의류 삭제
-    public void clothesDelete(int m_no, int cl_no){
-        boolean result = cl_c.clothesDelete(m_no,cl_no);
+    public void clothesDelete(int cl_no){
+        boolean result = cl_c.clothesDelete(cl_no);
         if(result){
             System.out.println("의류 삭제되었습니다.");
         }else{System.out.println("의류 삭제에 실패했습니다.");}
