@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.dao.ClosetDao;
 import model.dto.ClosetDto;
+import model.dto.MemberDto;
 
 public class ClosetController {
     private ClosetController(){}
@@ -13,6 +14,19 @@ public class ClosetController {
 
     // 의류 등록
     public boolean clothesAdd(ClosetDto closetDto){
+
+         MemberDto loginMember =
+            MemberController.getInstance().getLoginMember();
+        // 로그인 상태가 아니면 등록 불가
+        if(loginMember == null){
+            return false;
+        }
+
+        // 현재 로그인한 회원번호
+        int m_no = loginMember.getM_no();
+
+        // 등록할 의류에 현재 로그인 회원번호 저장
+        closetDto.setM_no(m_no);
 
         if(closetDto.getM_no() <= 0){ // 회원 번호가 있는지 검사
             return false; 

@@ -33,7 +33,7 @@ public class MemberView {
             int ch = scan.nextInt();
 
             if(ch == 1){
-                login();
+                login(); 
             }
             else if( ch == 2){
                 signUp();
@@ -96,8 +96,6 @@ public class MemberView {
         if(result == true){
             System.out.println("[안내] 회원가입이 완료되었습니다.");
         }else{System.out.println("[경고] 회원가입에 실패했습니다.");}
-
-        // 추후 Controller 연동 예쩡
 
 }
 }
