@@ -3,7 +3,7 @@ package model.dto;
 import java.util.List;
 
 // 1개 클래스 - 1개 용도 를 권장
-// 문법적으로 문제없이 작동은 한다.
+// 아래와 같이 작성해도 문법적으로 문제없이 작동은 함
 public class CodiDto {
     // 1. 추천 결과 담을 매개변수
     private CodiDto outer;
