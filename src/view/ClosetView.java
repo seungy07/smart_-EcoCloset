@@ -14,6 +14,7 @@ import model.dto.ClosetDto;
    메인 메뉴에서 다른 페이지들 넘어가는 부분 메소드  */
 
 public class ClosetView {
+
     private ClosetView(){}
     private static final ClosetView instance = new ClosetView();
     public static ClosetView getInstance(){ return instance; }
