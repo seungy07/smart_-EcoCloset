@@ -23,4 +23,16 @@ public class RecycleController {
 
         return result;
     }
+
+    public ArrayList<RecycleDto> findMaxWearCount(){
+        ArrayList<RecycleDto> result = rd.findMaxWearCount();
+
+        return result;
+    }
+
+    public ArrayList<RecycleDto> findMinWearCount() {
+        ArrayList<RecycleDto> result = rd.findMinWearCount();
+
+        return result;
+    }
 }

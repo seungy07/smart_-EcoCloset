@@ -23,18 +23,17 @@ public class RecycleDao extends BaseDao{
         ArrayList<RecycleDto> list = new ArrayList<>();
         try {
             // 1-1. SQL 작성
-            String sql = "select\r\n" + //
-                                "cl.cl_no AS \"의류번호\",\r\n" + //
-                                "cl.cl_name AS '의류이름', \r\n" + //
-                                "COUNT(w.w_no) AS '착용횟수', \r\n" + //
-                                "MAX(w.w_context) AS '마지막 착용',\r\n" + //
-                                "DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일'\r\n" + //
-                                "from users u inner join clothes cl on u.m_no = cl.m_no\r\n" + //
-                                "join wearlog w on cl.cl_no = w.cl_no\r\n" + //
-                                "WHERE u.m_no = ? AND cl.re_type IS NULL\r\n" + //
-                                "GROUP BY u.m_no, cl.cl_no, cl.cl_name\r\n" + //
-                                "HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;";
-
+            String sql = "SELECT " + 
+             "    cl.cl_no AS '의류번호', " + 
+             "    cl.cl_name AS '의류이름', " + 
+             "    COUNT(w.w_no) AS '착용횟수', " + 
+             "    MAX(w.w_context) AS '마지막 착용', " + 
+             "    IFNULL(DATEDIFF(CURDATE(), MAX(w.w_context)), -1) AS '미착용일' " +
+             "FROM users u INNER JOIN clothes cl ON u.m_no = cl.m_no " + 
+             "JOIN wearlog w ON cl.cl_no = w.cl_no " + 
+             "WHERE u.m_no = ? AND (cl.re_type IS NULL OR cl.re_type = '') " + 
+             "GROUP BY u.m_no, cl.cl_no, cl.cl_name " + 
+             "HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90;";
             // 1-2. 연동된 데이터베이스에 SQL 기재하기
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -100,6 +99,89 @@ public class RecycleDao extends BaseDao{
             }
         } catch (Exception e) {
             System.out.println("처리 중 오류가 발생했습니다." + e);
+        }
+
+        return result;
+    }
+
+    public ArrayList<RecycleDto> findMaxWearCount(){
+        ArrayList<RecycleDto> result = new ArrayList<>();
+        int m_no = getLoginMno();
+        try {
+            // 1-1. SQL 작성
+            String sql = "SELECT \r\n" + //
+                                "    cl.cl_no AS '의류번호',\r\n" + //
+                                "    cl.cl_name AS '의류이름',\r\n" + //
+                                "    COUNT(w.w_no) AS '착용횟수'\r\n" + //
+                                "FROM users u\r\n" + //
+                                "INNER JOIN clothes cl ON u.m_no = cl.m_no\r\n" + //
+                                "JOIN wearlog w ON cl.cl_no = w.cl_no\r\n" + //
+                                "WHERE u.m_no = ?\r\n" + //
+                                "GROUP BY cl.cl_no, cl.cl_name\r\n" + //
+                                "ORDER BY 착용횟수 DESC\r\n" + //
+                                "LIMIT 3;";
+            // 1-2. 연동된 데이터베이스에 SQL 기재하기
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            // 1-3. 와일드카드에 유저번호(m_no) 가져오기
+            ps.setInt(1, m_no);
+
+            // 1-4. 기재된 SQL을 실행하기
+            ResultSet rs = ps.executeQuery();
+
+            // 1-5. SQL 결과 가져오기(테이블 형태로 반환)
+            while (rs.next()) {// 각 레코드마다 순회
+                RecycleDto recycleDto = new RecycleDto();
+                recycleDto.setNo(rs.getInt("의류번호"));
+                recycleDto.setName(rs.getString("의류이름"));
+                recycleDto.setWearCount(rs.getInt("착용횟수"));
+
+                result.add(recycleDto); // 각 레코드들 RecycleDto 배열에 추가
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+
+        return result;
+    }
+
+    public ArrayList<RecycleDto> findMinWearCount() {
+        ArrayList<RecycleDto> result = new ArrayList<>();
+        int m_no = getLoginMno();
+        try {
+            // 1-1. SQL 작성
+            String sql = "SELECT \r\n" + //
+                    "    cl.cl_no AS '의류번호',\r\n" + //
+                    "    cl.cl_name AS '의류이름',\r\n" + //
+                    "    COUNT(w.w_no) AS '착용횟수'\r\n" + //
+                    "FROM users u\r\n" + //
+                    "INNER JOIN clothes cl ON u.m_no = cl.m_no\r\n" + //
+                    "LEFT JOIN wearlog w ON cl.cl_no = w.cl_no\r\n" + //
+                    "WHERE u.m_no = ? AND (cl.re_type IS NULL OR cl.re_type = '')\r\n" + //
+                    "GROUP BY cl.cl_no, cl.cl_name\r\n" + //
+                    "ORDER BY 착용횟수 ASC\r\n" + //
+                    "LIMIT 3;";
+            // 1-2. 연동된 데이터베이스에 SQL 기재하기
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            // 1-3. 와일드카드에 유저번호(m_no) 가져오기
+            ps.setInt(1, m_no);
+
+            // 1-4. 기재된 SQL을 실행하기
+            ResultSet rs = ps.executeQuery();
+
+            // 1-5. SQL 결과 가져오기(테이블 형태로 반환)
+            while (rs.next()) {// 각 레코드마다 순회
+                RecycleDto recycleDto = new RecycleDto();
+                recycleDto.setNo(rs.getInt("의류번호"));
+                recycleDto.setName(rs.getString("의류이름"));
+                recycleDto.setWearCount(rs.getInt("착용횟수"));
+
+                result.add(recycleDto); // 각 레코드들 RecycleDto 배열에 추가
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
         }
 
         return result;
