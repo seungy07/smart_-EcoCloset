@@ -50,6 +50,53 @@ public class ClosetDao extends BaseDao{
         return list;
     }
 
+    // 의류 개별 조회
+    public ClosetDto clothesPrint(int m_no, int cl_no){
+        try{
+            String sql = "select cl_no, c_no, cl_color, cl_name from clothes where m_no = ? and cl_no = ? and re_type is null";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, m_no);
+            ps.setInt(2, cl_no);
+
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                ClosetDto dto = new ClosetDto();
+                dto.setCl_no(rs.getInt("cl_no"));
+                dto.setC_no(rs.getInt("c_no"));
+                dto.setCl_color(rs.getString("cl_color"));
+                dto.setCl_name(rs.getString("cl_name"));
+                return dto;
+            }
+        }catch(SQLException e){System.out.println(e);}
+        return null;
+    }
+
+    // 의류 삭제 ( 행 삭제 )
+    public boolean clothesDelete(int m_no, int cl_no){
+        try{
+            String sql = "delete from clothes where m_no =? and cl_no =? ";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, m_no);
+            ps.setInt(2, cl_no);
+            int r = ps.executeUpdate();
+            if(r==1){return true;}
+        }catch(SQLException e){System.out.println(e);}
+        return false;
+    }
+
+    // 의류번호 검사(옷장에 존재여부) 
+    public boolean clothesNoCheck(int m_no, int cl_no){
+        try{
+            String sql = "select cl_no from clothes where m_no =? and cl_no=? and re_type is null";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, m_no);
+            ps.setInt(2, cl_no);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){return true;}
+        }catch(SQLException e){System.out.println(e);}
+        return false;
+    }
+
 
 
     

@@ -32,4 +32,21 @@ public class ClosetController {
         return result; 
     }
 
+    // 의류 개별 조회 
+    public ClosetDto clothesPrint(int m_no, int cl_no){
+        ClosetDto result = cl_d.clothesPrint(m_no, cl_no);
+        return result;
+    }
+
+    // 의류 삭제 ( 개별 조회 페이지 -> 삭제 )
+    public boolean clothesDelete(int m_no, int cl_no){
+        boolean result = cl_d.clothesDelete(m_no,cl_no);
+        return result;
+    }
+
+    // 의류번호 검사(옷장에 존재여부) 
+    public boolean clothesNoCheck(int m_no, int cl_no){
+        boolean result = cl_d.clothesNoCheck(m_no,cl_no);
+        return result;
+    }
 }
