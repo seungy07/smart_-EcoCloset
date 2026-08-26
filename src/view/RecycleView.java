@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import controller.MemberController;
 import controller.RecycleController;
 import model.dto.RecycleDto;
     // 로그인한 회원 번호 확인용
@@ -176,13 +175,5 @@ public class RecycleView {
                 break;
             }
         }
-
-        
-
-
-
-
-        
-        
     }
 }
