@@ -188,7 +188,8 @@ public class RecycleDao extends BaseDao{
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        // [1] 현재 보유중인 의류 총합 쿼리
+        // [1] 현재 이 유저가 보유중인 의류 총 개수
+        // 같은 의류를 또 세지 않도록 clothes 테이블의 의류이름은 중복해서 세면 안된다.
 
         // [2] 이번 달 착용한 횟수를 담을 부분
 
