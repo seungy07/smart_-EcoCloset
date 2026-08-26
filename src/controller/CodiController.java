@@ -2,6 +2,7 @@ package controller;
 
 import model.dao.CodiDao;
 import model.dto.CodiDto;
+import controller.MemberController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,14 +20,21 @@ public class CodiController {
     // 무채색 리스트
     private final List<String> NEUTRAL_COLORS = Arrays.asList("white", "black", "gray");
 
-    // 계절 매칭 검사 (3~9월: SS(1), 10~2월: FW(2))
-    public ArrayList<CodiDto> seasonSearch(int mNo) {
+    // [ 메소드 1 ] filterSearch() : 회원번호 / 계절 매칭 검사
+    // 3~9월: SS(1), 10~2월: FW(2)
+    public ArrayList<CodiDto> filterSearch() {
+        //로그인 회원정보 ( MemberDto ) 반환
+        MemberDto loginMember = MemberController.getInstance().getLoginMember();
+        //회원번호만 추출
+        int mNo = loginMember.getM_no();
+        
         int month = LocalDate.now().getMonthValue();
         int season = (month >= 3 && month <= 9) ? 1 : 2; // 1: SS, 2: FW
-        return CodiDao.getInstance().seasonSearch(mNo, season);
+        return CodiDao.getInstance().filterSearch(mNo, season);
+        // -> 현재 로그인 회원번호 / 계절 번호 Dao로 넘김
     }
 
-    // 코디 추천 로직 (중복 허용 무작위 추출)
+    // [ 메소드 2 ] outfitRecommend() : 코디 추천 로직 (중복 허용 무작위 추출)
     public CodiDto outfitRecommend(ArrayList<CodiDto> clothesList, String preferredColor) {
         if (clothesList == null || clothesList.isEmpty()) {
             return null;
@@ -85,7 +93,6 @@ public class CodiController {
         topColor = topColor.toLowerCase();
         bottomColor = bottomColor.toLowerCase();
 
-        // 사용자 선호 색상 조건
         if (preferredColor != null && !preferredColor.isEmpty() && !preferredColor.equals("all")) {
             if (!topColor.equals(preferredColor) && !bottomColor.equals(preferredColor)) {
                 return false;
@@ -127,13 +134,13 @@ public class CodiController {
     }
 
     // 착용 기록 등록
-    public boolean wearAdd(CodiDto wearDto) {
-        return CodiDao.getInstance().wearAdd(wearDto);
+    public boolean wearLogAdd(CodiDto wearDto) {
+        return CodiDao.getInstance().wearLogAdd(wearDto);
     }
 
     // 마지막 착용 기록 조회
-    public String wearPrintAll(int clNo) {
-        return CodiDao.getInstance().wearPrintAll(clNo);
+    public String wearLogPrint(int clNo) {
+        return CodiDao.getInstance().wearLogPrint(clNo);
     }
 
     // 착용 횟수 조회

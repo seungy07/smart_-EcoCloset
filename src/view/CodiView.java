@@ -3,7 +3,6 @@ package view;
 import controller.CodiController;
 import model.dto.CodiDto;
 import model.dto.MemberDto;
-import controller.MemberController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class CodiView {
     CodiController cc = CodiController.getInstance();
 
 
-    public void recommendView(int loginMNo) {
+    public void recommendView() {
         while (true) {
             
             System.out.println("\n==================================================");
@@ -33,8 +32,8 @@ public class CodiView {
             // 1. Controller 및 DB 호출 예외 처리
             try {
 
-                ArrayList<CodiDto> seasonClothes = cc.seasonSearch(loginMNo);
-                codi = cc.outfitRecommend(seasonClothes, "all");
+                ArrayList<CodiDto> filterClothes = cc.filterSearch();
+                codi = cc.outfitRecommend(filterClothes, "all");
 
             } catch (Exception e) {
                 System.out.println("(오류) 데이터 불러오는 중 시스템에러 발생.");
@@ -78,7 +77,7 @@ public class CodiView {
                 CodiDto wearDto = new CodiDto(LocalDate.now().toString(), usedClNos);
 
                 try {
-                    boolean result = cc.wearAdd(wearDto);
+                    boolean result = cc.wearLogAdd(wearDto);
                     if (result) {
                         System.out.println("(안내) 의류 착용 횟수 + 1회 증가!");
                     } else {
@@ -92,6 +91,7 @@ public class CodiView {
             else if (select == 2) {
                 System.out.println("(안내) 다른 코디를 탐색 중...");
                 // 루프 재실행 -> 새로운 무작위 코디 추출
+                continue;
             } 
             else if (select == 0) {
                 System.out.println("(안내) 메인 메뉴로 이동합니다.");

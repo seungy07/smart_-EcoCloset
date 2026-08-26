@@ -28,10 +28,8 @@ public class ClosetController {
         // 현재 로그인한 회원번호
         int m_no = getLoginM_no();
         if(m_no == -1){return false;}
-
-        // 등록할 의류에 현재 로그인 회원번호 저장
         closetDto.setM_no(m_no);
-
+        
         if(closetDto.getM_no() <= 0){ // 회원 번호가 있는지 검사
             return false; }
         if(closetDto.getC_no() <= 0){ // 카테고리번호가 있는지 검사
