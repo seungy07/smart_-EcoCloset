@@ -140,6 +140,49 @@ public class RecycleView {
         System.out.println( "          ClosetMate 의류 순환 리포트");
         System.out.println("--------------------------------------------------");
         System.out.println("");
+
+
+        RecycleDto result = rc.recyclePrint();
+
+        System.out.println("현재 보유 의류: " + result.getClothesSum() + "벌");
+        System.out.println("이번 달 착용: " + result.getWearCountInMonth() + "회");
+        System.out.println("90일 이상 미착용: " + result.getUnUsedClothesSum() + "벌");
+        System.out.println();
+        System.out.println("[의류 순환 현황]");
+        System.out.println();
+        System.out.println();
+        System.out.println("기부: " + result.getClothesDonation() + "회");
+        System.out.println("나눔: " + result.getClothesShare() + "회");
+        System.out.println("중고판매: " + result.getUsedClothesSale() + "회");
+        System.out.println();
+        System.out.println("총 순환 의류: " + result.getTotalRecycleSum() + "벌");
+        System.out.println();
+        System.out.println("가장 많이 입은 옷");
+        System.out.println("- "+ result.getMostClothes() + " " + result.getMostClothesCount() + "회" );
+        System.out.println();
+        System.out.println("가장 오래 입지 않은 옷");
+        System.out.println("- " + result.getOldestUnusedClothes() + " " + result.getOldestUnusedDays() + "일");
+        System.out.println();
+        System.out.println("--------------------------------------------------");
+        System.out.println("※ Eco DashBoard를 보시겠습니까?");
+        System.out.println(" 0 - [아니오] , 1 - [네]");
+        while (true) {
+            System.out.print("> 입력: "); int ch = scanner.nextInt();
+
+            if (ch == 0) {
+                break;
+            } else if (ch == 1) {
+                // 에코 대시보드 넘어가기 메서드 불러올 것.
+                break;
+            }
+        }
+
+        
+
+
+
+
+        
         
     }
 }

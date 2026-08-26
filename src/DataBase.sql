@@ -1091,6 +1091,7 @@ UPDATE clothes SET re_type = '중고판매' WHERE cl_no = 288;
 UPDATE clothes SET re_type = '나눔' WHERE cl_no = 294;
 UPDATE clothes SET re_type = '폐기' WHERE cl_no = 299;
 
+-- 샘플 데이터 입력 종료 =================================================================
 
 select
     u.m_no AS "회원번호(PK)",
@@ -1121,3 +1122,15 @@ select
     from users u
     inner join clothes cl on u.m_no = cl.m_no
     LEFT JOIN wearlog w on cl.cl_no = w.cl_no;
+
+
+SELECT * from clothes where clothes.m_no = 1;
+
+select * from clothes inner join wearlog on clothes.cl_no = wearlog.cl_no WHERE m_no = 1;
+select * from clothes inner join wearlog on clothes.cl_no = wearlog.cl_no WHERE m_no = 1 and cl_name = '회색 니트'
+
+SELECT cl_name, re_type from clothes WHERE m_no = 1 GROUP BY cl_name, re_type;
+
+SELECT DISTINCT cl_name 
+FROM clothes 
+WHERE m_no = 1 AND (re_type IS NULL OR re_type = '');

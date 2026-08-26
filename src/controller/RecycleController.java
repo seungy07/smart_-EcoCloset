@@ -56,7 +56,11 @@ public class RecycleController {
         return result;
     }
 
-    public void recyclePrint(){
-        
+    public RecycleDto recyclePrint(){
+        int m_no = getLoginM_no();
+        if(m_no == -1){return new RecycleDto();}
+        RecycleDto result = rd.recyclePrint(m_no);
+
+        return result;
     }
 }

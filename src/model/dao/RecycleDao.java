@@ -78,13 +78,14 @@ public class RecycleDao extends BaseDao{
             }
 
             // 2-2. SQL 작성
-            String sql = "UPDATE clothes SET re_type = ? WHERE cl_no = ?";
+            String sql = "UPDATE clothes SET re_type = ? WHERE m_no = ? and cl_no = ?";
             // 2-2. 연동된 DB에 SQL 기재
             PreparedStatement ps = conn.prepareStatement(sql);
 
             // 2-3. 와일드카드에 선택한 의류번호 넣기(cl_no)
             ps.setString(1, reTypeStr);
-            ps.setInt(2, ch_no);
+            ps.setInt(2, m_no);
+            ps.setInt(3, ch_no);
 
             // 2-4. 기재된 SQL 실행
             // executeUpdate()를 조건문 안에다만 작성해도, 일단 조건문을 평가하기 위해 메서드를 무조건 실행하므로 실제로도 작동함
@@ -180,31 +181,152 @@ public class RecycleDao extends BaseDao{
         return result;
     }
 
-    public void recyclePrint(){
-        // 결과물을 담아서 보낼 리스트
-        ArrayList<RecycleDto> list = new ArrayList<>();
+    public RecycleDto recyclePrint(int m_no){
+        // 결과물을 담아서 보낼 DTO -> 한 유저의 종합 순환 리포트 == 레코드 단 하나
+        RecycleDto dto = new RecycleDto();
 
-        // ps와 rs 변수를 미리 선언해 둠(재사용)
+        // ps와 rs 변수를 미리 선언해 둠(재사용을 해야 하므로 null로 선언.)
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        // [1] 현재 이 유저가 보유중인 의류 총 개수
-        // 같은 의류를 또 세지 않도록 clothes 테이블의 의류이름은 중복해서 세면 안된다.
+        try {
+            // [1] 현재 보유, 기부, 나눔, 중고판매 의류 총합 =======================================
+            // 1-1. sql 작성
+            String sql1 = "SELECT " +
+                    "    COUNT(DISTINCT IF(re_type IS NULL OR re_type = '', cl_name, NULL)) AS '보유총합', " +
+                    "    COUNT(IF(re_type = '기부', 1, NULL)) AS '기부총합', " +
+                    "    COUNT(IF(re_type = '나눔', 1, NULL)) AS '나눔총합', " +
+                    "    COUNT(IF(re_type = '중고판매', 1, NULL)) AS '중고판매총합' " +
+                    "FROM clothes WHERE m_no = ?";
 
-        // [2] 이번 달 착용한 횟수를 담을 부분
+            // 1-2 sql 기재
+            ps = conn.prepareStatement(sql1);
 
-        // [3] 90일 이상 미착용한 의류 총합을 뽑아올 부분
+            // 1-3 매개변수(유저번호) 대입
+            ps.setInt(1, m_no);
 
-        // [4] 기부할 옷의 총합을 뽑아올 부분
+            // 1-4. SQL 실행
+            rs = ps.executeQuery();
 
-        // [5] 나눔한 옷의 총합을 뽑아올 부분
+            // 1-5. SQL 실행결과 DTO에 옮기기
+            if (rs.next()) {
+                dto.setClothesSum(rs.getInt("보유총합"));
+                dto.setClothesDonation(rs.getInt("기부총합"));
+                dto.setClothesShare(rs.getInt("나눔총합"));
+                dto.setUsedClothesSale(rs.getInt("중고판매총합"));
+            }
+            
+            // 1-6. 자원 해제하기(메모리 누수 방지 차원)
+            if (rs != null) rs.close(); 
+            if (ps != null) ps.close();
 
-        // [6] 중고판매한 옷의 총합을 뽑아올 부분
+            // [2] 이번 달 착용 횟수(회)=======================================================
+            // 2.1 SQL 작성
+            String sql2 = "SELECT COUNT(*) AS '이번달착용' FROM wearlog w " +
+                    "JOIN clothes cl ON w.cl_no = cl.cl_no " +
+                    "WHERE cl.m_no = ? AND YEAR(w.w_context) = YEAR(CURDATE()) AND MONTH(w.w_context) = MONTH(CURDATE())";
 
-        // [7] 총 순환 의류를 뽑아올 부분
+            // 2-2. SQL 기재
+            ps = conn.prepareStatement(sql2);
 
-        // [8] 가장 많이 입은 옷의 이름과 착용 횟수를 가져올 부분
+            // 2-3. 매개변수 대입(유저번호)
+            ps.setInt(1, m_no);
 
-        // [9] 가장 오래 입지 않은 옷의 이름과 착용 횟수를 가져올 부분
+            // 2-4. SQL 실행
+            rs = ps.executeQuery();
+
+            // 2-5. SQL 결과 dto에 담기
+            if (rs.next()) {
+                dto.setWearCountInMonth(rs.getInt("이번달착용"));
+            }
+
+            // 2-6. 자원 해제
+            if (rs != null) { rs.close(); } if (ps != null) { ps.close(); }
+
+            // [3] 90일 이상 미착용 의류 총 개수)=======================================================
+            // 3-1. SQL 작성
+            String sql3 = "SELECT COUNT(*) AS '미착용총합' FROM (" +
+                    "    SELECT cl.cl_no FROM clothes cl JOIN wearlog w ON cl.cl_no = w.cl_no " +
+                    "    WHERE cl.m_no = ? AND (cl.re_type IS NULL OR cl.re_type = '') " +
+                    "    GROUP BY cl.cl_no HAVING DATEDIFF(CURDATE(), MAX(w.w_context)) >= 90" +
+                    ") AS sub";
+
+            // 3-2. SQL 기재
+            ps = conn.prepareStatement(sql3);
+
+            // 3-3. 매개변수 대입(유저번호)
+            ps.setInt(1, m_no);
+
+            // 3-4. SQL 실행
+            rs = ps.executeQuery();
+
+            // 3-5. SQL 결과 dto에 옮김
+            if (rs.next()) {
+                dto.setUnUsedClothesSum(rs.getInt("미착용총합"));
+            }
+
+            // 3-6. 자원 해제
+            if (rs != null) rs.close(); if (ps != null) ps.close();
+
+            // [4] 가장 많이 입은 옷 이름과 그 옷을 입은 횟수 가져오기)=======================================================
+            // 4-1. SQL 작성
+            String sql4 = "SELECT cl.cl_name AS '의류이름', COUNT(w.w_no) AS '착용횟수' " +
+                    "FROM clothes cl JOIN wearlog w ON cl.cl_no = w.cl_no " +
+                    "WHERE cl.m_no = ? " +
+                    "GROUP BY cl.cl_no, cl.cl_name ORDER BY 착용횟수 DESC LIMIT 1";
+            
+            // 4-2. SQL 기재
+            ps = conn.prepareStatement(sql4);
+
+            // 4-3. 유저번호 대입
+            ps.setInt(1, m_no);
+
+            // 4-4. SQL 실행
+            rs = ps.executeQuery();
+
+            // 4-5. 실행 결과 dto에 옮김
+            while (rs.next()) {
+                dto.setMostClothes(rs.getString("의류이름"));
+                dto.setMostClothesCount(rs.getInt("착용횟수"));
+            }
+
+            // 4-6. 자원 해제
+            if( rs != null ) { rs.close(); } if( ps != null ) { ps.close(); }
+
+            // [5] 가장 오래 입지 않은 옷 이름과 그 옷을 방치한 기간(일) 가져오기)=======================================================
+            // 5-1. SQL 작성
+            String sql5 = "SELECT cl.cl_name AS '의류이름', DATEDIFF(CURDATE(), MAX(w.w_context)) AS '미착용일수' " +
+                    "FROM clothes cl JOIN wearlog w ON cl.cl_no = w.cl_no " +
+                    "WHERE cl.m_no = ? AND (cl.re_type IS NULL OR cl.re_type = '') " +
+                    "GROUP BY cl.cl_no, cl.cl_name ORDER BY 미착용일수 DESC LIMIT 1";
+            
+            // 5-2. SQL 기재
+            ps = conn.prepareStatement(sql5);
+
+            // 5-3. 유저번호 대입
+            ps.setInt(1, m_no);
+            
+            // 5-4 SQL 실행
+            rs = ps.executeQuery();
+
+            // 5-5. 실행 결과 dto에 옮기기
+            while (rs.next()) {
+                dto.setOldestUnusedClothes(rs.getString("의류이름"));
+                dto.setOldestUnusedDays(rs.getInt("미착용일수"));
+            }
+        } catch (SQLException e) {
+            System.out.println("순환 리포트 생성 중 오류 발생\n" + e);
+        } finally {
+            // 맨 마지막에 자원 해제
+            try {
+                if (rs != null)
+                    rs.close();
+                if (ps != null)
+                    ps.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+        return dto;
     }
 }
