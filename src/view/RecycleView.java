@@ -150,7 +150,6 @@ public class RecycleView {
         System.out.println();
         System.out.println("[의류 순환 현황]");
         System.out.println();
-        System.out.println();
         System.out.println("기부: " + result.getClothesDonation() + "회");
         System.out.println("나눔: " + result.getClothesShare() + "회");
         System.out.println("중고판매: " + result.getUsedClothesSale() + "회");
