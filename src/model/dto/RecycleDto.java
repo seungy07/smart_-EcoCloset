@@ -15,6 +15,7 @@ public class RecycleDto {
     int clothesDonation; // 기부한 옷 총합(벌)
     int clothesShare; // 나눔한 옷 총합(벌)
     int usedClothesSale; // 중고판매한 옷 총합(벌)
+    int wastedClothes;   // 폐기한 옷 총합(벌)
     int totalRecycleSum; // 총 순환 의류(벌)
 
     String mostClothes; // 가장 많이 입은 옷의 이름
@@ -24,6 +25,8 @@ public class RecycleDto {
     int oldestUnusedDays; // 가장 오래 입지 입은 옷의 입지 않은 기간
 
     
+
+
 
     // 기본 Getter and Setter들
     public int getNo() {
@@ -114,6 +117,14 @@ public class RecycleDto {
         this.usedClothesSale = usedClothesSale;
     }
 
+    public int getWastedClothes() {
+        return wastedClothes;
+    }
+
+    public void setWastedClothes(int wastedClothes) {
+        this.wastedClothes = wastedClothes;
+    }
+
     public String getMostClothes() {
         return mostClothes;
     }
@@ -148,7 +159,7 @@ public class RecycleDto {
 
     // 총 의류 순환 계산용, 기부+나눔+중고판매를 더함
     public int getTotalRecycleSum() {
-        return clothesDonation + clothesShare + usedClothesSale;
+        return clothesDonation + clothesShare + usedClothesSale + wastedClothes;
     }
 
     @Override
@@ -156,11 +167,11 @@ public class RecycleDto {
         return "RecycleDto [no=" + no + ", name=" + name + ", wearCount=" + wearCount + ", date=" + date
                 + ", unUsedDays=" + unUsedDays + ", clothesSum=" + clothesSum + ", wearCountInMonth=" + wearCountInMonth
                 + ", unUsedClothesSum=" + unUsedClothesSum + ", clothesDonation=" + clothesDonation + ", clothesShare="
-                + clothesShare + ", usedClothesSale=" + usedClothesSale + ", totalRecycleSum=" + totalRecycleSum
-                + ", mostClothes=" + mostClothes + ", mostClothesCount=" + mostClothesCount + ", oldestUnusedClothes="
-                + oldestUnusedClothes + ", oldestUnusedDays=" + oldestUnusedDays + "]";
+                + clothesShare + ", usedClothesSale=" + usedClothesSale + ", wastedClothes=" + wastedClothes
+                + ", totalRecycleSum=" + totalRecycleSum + ", mostClothes=" + mostClothes + ", mostClothesCount="
+                + mostClothesCount + ", oldestUnusedClothes=" + oldestUnusedClothes + ", oldestUnusedDays="
+                + oldestUnusedDays + "]";
     }
 
-    
 
 }

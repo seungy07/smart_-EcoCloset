@@ -77,6 +77,12 @@ public class RecycleView {
                 System.out.println("> 이 옷을 어떻게 관리하시겠습니까?");
                 System.out.print("> 1. 계속 보관 2. 기부 3. 나눔 4. 중고판매 5. 의류 폐기: ");
                 int caseNum = scanner.nextInt();
+
+                // 1번 눌렀을 경우 별 다른 일 없이 break
+                if (caseNum == 1) {
+                    System.out.println("> 해당 의류를 계속 보관합니다.");
+                    break;
+                }
                 boolean result = rc.reCycleAdd(ch_no, caseNum, dto);
 
                 if (result) {
@@ -152,6 +158,7 @@ public class RecycleView {
         System.out.println("기부: " + result.getClothesDonation() + "회");
         System.out.println("나눔: " + result.getClothesShare() + "회");
         System.out.println("중고판매: " + result.getUsedClothesSale() + "회");
+        System.out.println("폐기: " + result.getWastedClothes() + "벌");
         System.out.println();
         System.out.println("총 순환 의류: " + result.getTotalRecycleSum() + "벌");
         System.out.println();

@@ -60,9 +60,7 @@ public class RecycleDao extends BaseDao{
         String reTypeStr = ""; // 어떻게 처리하는지를 담은 문자열(caseNum에 따라 달라짐)
         try {
             // 2-1. 처리 유형에 따른 문자열 지정
-            if (caseNum == 1) {
-                System.out.println("> 해당 의류를 계속 보관합니다.");
-            } else if (caseNum == 2) {
+            if (caseNum == 2) {
                 reTypeStr = "기부";
             } else if (caseNum == 3) {
                 reTypeStr = "나눔";
@@ -70,27 +68,23 @@ public class RecycleDao extends BaseDao{
                 reTypeStr = "중고판매";
             } else if (caseNum == 5) {
                 reTypeStr = "폐기";
-            } else {
-                System.out.println("> 유효하지 않은 입력으로 인해 처리가 중단되었습니다.");
             }
 
-            if (caseNum == 2 | caseNum == 3 | caseNum == 4) {
-                // 2-2. SQL 작성
-                String sql = "UPDATE clothes SET re_type = ? WHERE m_no = ? and cl_no = ?";
-                // 2-2. 연동된 DB에 SQL 기재
-                PreparedStatement ps = conn.prepareStatement(sql);
+            // 2-2. SQL 작성
+            String sql = "UPDATE clothes SET re_type = ? WHERE m_no = ? and cl_no = ?";
+            // 2-2. 연동된 DB에 SQL 기재
+            PreparedStatement ps = conn.prepareStatement(sql);
 
-                // 2-3. 와일드카드에 선택한 의류번호 넣기(cl_no)
-                ps.setString(1, reTypeStr);
-                ps.setInt(2, m_no);
-                ps.setInt(3, ch_no);
+            // 2-3. 와일드카드에 선택한 의류번호 넣기(cl_no)
+            ps.setString(1, reTypeStr);
+            ps.setInt(2, m_no);
+            ps.setInt(3, ch_no);
 
-                // 2-4. 기재된 SQL 실행
-                // executeUpdate()를 조건문 안에다만 작성해도, 일단 조건문을 평가하기 위해 메서드를 무조건 실행하므로 실제로도 작동함
-                if (ps.executeUpdate() > 0) { 
-                    result = true;
-                    System.out.println("해당 의류를 ["+reTypeStr+"] 처리합니다.");
-                }
+            // 2-4. 기재된 SQL 실행
+            // executeUpdate()를 조건문 안에다만 작성해도, 일단 조건문을 평가하기 위해 메서드를 무조건 실행하므로 실제로도 작동함
+            if (ps.executeUpdate() > 0) { 
+                result = true;
+                System.out.println("해당 의류를 ["+reTypeStr+"] 처리합니다.");
             }
 
         } catch (SQLException e) {
@@ -196,7 +190,8 @@ public class RecycleDao extends BaseDao{
                     "    COUNT(DISTINCT IF(re_type IS NULL OR re_type = '', cl_name, NULL)) AS '보유총합', " +
                     "    COUNT(IF(re_type = '기부', 1, NULL)) AS '기부총합', " +
                     "    COUNT(IF(re_type = '나눔', 1, NULL)) AS '나눔총합', " +
-                    "    COUNT(IF(re_type = '중고판매', 1, NULL)) AS '중고판매총합' " +
+                    "    COUNT(IF(re_type = '중고판매', 1, NULL)) AS '중고판매총합', " +
+                    "    COUNT(IF(re_type = '폐기', 1, NULL)) AS '폐기총합' " +
                     "FROM clothes WHERE m_no = ?";
 
             // 1-2 sql 기재
@@ -214,6 +209,7 @@ public class RecycleDao extends BaseDao{
                 dto.setClothesDonation(rs.getInt("기부총합"));
                 dto.setClothesShare(rs.getInt("나눔총합"));
                 dto.setUsedClothesSale(rs.getInt("중고판매총합"));
+                dto.setWastedClothes(rs.getInt("폐기총합"));
             }
             
             // 1-6. 자원 해제하기(메모리 누수 방지 차원)
