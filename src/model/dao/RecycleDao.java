@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import controller.MemberController;
 import model.dto.RecycleDto;
 
 public class RecycleDao extends BaseDao{
@@ -63,7 +62,6 @@ public class RecycleDao extends BaseDao{
             // 2-1. 처리 유형에 따른 문자열 지정
             if (caseNum == 1) {
                 System.out.println("> 해당 의류를 계속 보관합니다.");
-                return false;
             } else if (caseNum == 2) {
                 reTypeStr = "기부";
             } else if (caseNum == 3) {
@@ -73,27 +71,29 @@ public class RecycleDao extends BaseDao{
             } else if (caseNum == 5) {
                 reTypeStr = "폐기";
             } else {
-                System.out.println(">유효하지 않은 입력으로 인해 처리가 중단되었습니다.");
-                return result;
+                System.out.println("> 유효하지 않은 입력으로 인해 처리가 중단되었습니다.");
             }
 
-            // 2-2. SQL 작성
-            String sql = "UPDATE clothes SET re_type = ? WHERE m_no = ? and cl_no = ?";
-            // 2-2. 연동된 DB에 SQL 기재
-            PreparedStatement ps = conn.prepareStatement(sql);
+            if (caseNum == 2 | caseNum == 3 | caseNum == 4) {
+                // 2-2. SQL 작성
+                String sql = "UPDATE clothes SET re_type = ? WHERE m_no = ? and cl_no = ?";
+                // 2-2. 연동된 DB에 SQL 기재
+                PreparedStatement ps = conn.prepareStatement(sql);
 
-            // 2-3. 와일드카드에 선택한 의류번호 넣기(cl_no)
-            ps.setString(1, reTypeStr);
-            ps.setInt(2, m_no);
-            ps.setInt(3, ch_no);
+                // 2-3. 와일드카드에 선택한 의류번호 넣기(cl_no)
+                ps.setString(1, reTypeStr);
+                ps.setInt(2, m_no);
+                ps.setInt(3, ch_no);
 
-            // 2-4. 기재된 SQL 실행
-            // executeUpdate()를 조건문 안에다만 작성해도, 일단 조건문을 평가하기 위해 메서드를 무조건 실행하므로 실제로도 작동함
-            if (ps.executeUpdate() > 0) { 
-                result = true;
-                System.out.println("해당 의류를 ["+reTypeStr+"] 처리합니다.");
+                // 2-4. 기재된 SQL 실행
+                // executeUpdate()를 조건문 안에다만 작성해도, 일단 조건문을 평가하기 위해 메서드를 무조건 실행하므로 실제로도 작동함
+                if (ps.executeUpdate() > 0) { 
+                    result = true;
+                    System.out.println("해당 의류를 ["+reTypeStr+"] 처리합니다.");
+                }
             }
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
             System.out.println("처리 중 오류가 발생했습니다." + e);
         }
 

@@ -1126,7 +1126,8 @@ select
 
 SELECT * from clothes where clothes.m_no = 1;
 
-select * from clothes inner join wearlog on clothes.cl_no = wearlog.cl_no WHERE m_no = 1;
+select * from clothes LEFT join wearlog on clothes.cl_no = wearlog.cl_no;
+select * from clothes LEFT join wearlog on clothes.cl_no = wearlog.cl_no WHERE m_no = 1;
 select * from clothes inner join wearlog on clothes.cl_no = wearlog.cl_no WHERE m_no = 1 and cl_name = '회색 니트'
 
 SELECT cl_name, re_type from clothes WHERE m_no = 1 GROUP BY cl_name, re_type;
