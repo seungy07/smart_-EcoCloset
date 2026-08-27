@@ -97,5 +97,24 @@ public class MemberView {
             System.out.println("[안내] 회원가입이 완료되었습니다.");
         }else{System.out.println("[경고] 회원가입에 실패했습니다.");}
 
-}
+    }
+    // Eco Dashboard
+    public void ecoDashboard(){
+
+        // 1. 현재 로그인 회원의 Eco Point 가져오기
+        int ecoPoint = memberController.ecoPoint();
+
+        // 2. Eco Point에 따른 Eco Level 가져오기
+        String ecoLevel = memberController.ecoLevelCheck(ecoPoint);
+
+        // 3. 화면 출력
+        System.out.println("=====================================");
+        System.out.println("            Eco Dashboard");
+        System.out.println("=====================================");
+        System.out.println();
+        System.out.println("Eco Point : " + ecoPoint + " P");
+        System.out.println("Eco Level : " + ecoLevel);
+        System.out.println();
+        System.out.println("=====================================");
+    }
 }

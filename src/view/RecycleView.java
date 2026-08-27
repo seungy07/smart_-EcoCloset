@@ -177,7 +177,7 @@ public class RecycleView {
             if (ch == 0) {
                 break;
             } else if (ch == 1) {
-                // 에코 대시보드 넘어가기 메서드 불러올 것.
+                MemberView.getInstance().ecoDashboard();
                 break;
             }
         }
