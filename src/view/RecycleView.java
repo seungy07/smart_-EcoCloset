@@ -172,14 +172,16 @@ public class RecycleView {
         System.out.println("※ Eco DashBoard를 보시겠습니까?");
         System.out.println(" 0 - [아니오] , 1 - [네]");
         while (true) {
-            System.out.print("> 입력: "); int ch = scanner.nextInt();
+            try{
+                System.out.print("> 입력: "); int ch = scanner.nextInt();
 
-            if (ch == 0) {
-                break;
-            } else if (ch == 1) {
-                MemberView.getInstance().ecoDashboard();
-                break;
-            }
+                if (ch == 0) {
+                    break;
+                } else if (ch == 1) {
+                    MemberView.getInstance().ecoDashboard();
+                    break;
+                }
+            }catch(Exception e){scanner= new Scanner(System.in); System.out.println(e);}
         }
     }
 }
