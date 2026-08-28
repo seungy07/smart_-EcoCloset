@@ -69,7 +69,7 @@ public class ClosetController {
     // 의류번호 검사(옷장에 존재여부) 
     public boolean clothesNoCheck(int cl_no){
         int m_no = getLoginM_no();
-        if(m_no <= 0){return false;}
+        if(m_no <= 0){return false;} // 회원 번호는 1,2,3.... 
         boolean result = cl_d.clothesNoCheck(m_no,cl_no);
         return result;
     }
